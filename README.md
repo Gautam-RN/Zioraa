@@ -1,2 +1,2 @@
 # Zioraa
-Zioraa COmpany Official Website
+Zioraa Company Official Website
