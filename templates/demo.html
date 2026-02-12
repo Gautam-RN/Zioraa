@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Zioraa | Username</title>
+  <style>
+  .profile-header {
+  background: var(--gold);
+  padding: 60px 20px 40px;
+  text-align: center;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+    .profile-header h1 {font-size:36px; margin-bottom:10px;}
+    .profile-header p {font-size:16px; opacity:0.9;}
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 14px;
+      color: #121212;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 28px;
+      transition:0.3s;
+    }
+    .profile-container {
+  max-width: 1000px;
+  margin: -30px auto 50px; /* stronger overlap */
+  background: #1f1f1f;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  position: relative;
+  z-index: 5; /* brings it forward */
+}
+
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+th,td{
+  padding:12px;
+  border-bottom:1px solid #333;
+}
+th{
+  color:#aaa;
+}
+.btn{
+  background:#d4af37;
+  color:#000;
+  padding:6px 14px;
+  text-decoration:none;
+  border-radius:4px;
+}
+    .profile-card {
+      display:flex;
+      align-items:center;
+      padding:30px;
+      gap:20px;
+      border-bottom:1px solid #333;
+    }
+    .profile-card img {
+      width:120px; height:120px; border-radius:50%;
+      border:4px solid var(--gold);
+    }
+    .profile-card-info h2 {font-size:24px; margin-bottom:5px; color:var(--gold);}
+    .profile-card-info p {opacity:0.8; margin-bottom:10px;}
+    .profile-card-info button {
+      padding:8px 20px; background:var(--gold); border:none; border-radius:6px;
+      color:#121212; font-weight:600; transition:0.3s;
+    }
+    .profile-card-info button:hover {background:#b38f2b;}
+
+    .tab-nav {display:flex; background:#1a1a1a;}
+    .tab-nav button {
+      flex:1; padding:15px 0; border:none; background:#1a1a1a; color:#fff; font-weight:600; transition:0.3s;
+    }
+    .tab-nav button.active, .tab-nav button:hover {background:var(--gold); color:#121212;}
+
+    .tab-content {padding:30px;}
+    .tab-section h3 {color:var(--gold); margin-bottom:15px; font-size:20px; border-bottom:1px solid #333; padding-bottom:5px;}
+    .tab-section p {margin-bottom:10px; font-size:15px;}
+    .tab-section label {display:block; margin-top:10px; margin-bottom:5px; font-weight:500;}
+    .tab-section input {
+      width:100%; padding:10px; border-radius:6px; border:1px solid #555;
+      background:#2c2c2c; color:#fff; font-size:14px;
+    }
+    .tab-section button {
+      margin-top:15px; padding:10px 20px; background:var(--gold); border:none;
+      border-radius:6px; color:#121212; font-weight:600; transition:0.3s;
+    }
+    .tab-section button:hover {background:#b38f2b;}
+
+    @media(max-width:768px){
+      .profile-card {flex-direction:column; text-align:center;}
+      .profile-card-info button {margin-top:10px;}
+      .tab-nav {flex-direction:column;}
+      .home-button {top:10px; right:10px; padding:8px 12px;}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-header">
+    <h1>User Profile</h1>
+    <p>Manage your account, orders, wishlist & settings</p>
+    <a class="home-button" href="/"><i class="fa fa-home"></i></a>
+  </div>
+
+  <div class="profile-container">
+
+    <div class="profile-card">
+      <img src="data:image/png;base64,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" alt="Profile Picture">
+      <div class="profile-card-info">
+        <h2>{{user[1]}}</h2>
+        <p>{{user[5]}}</p>
+      </div>
+    </div>
+
+    <div class="tab-nav">
+      <button class="tab-btn active" data-tab="profile">Profile</button>
+      <button class="tab-btn" data-tab="orders">Orders</button>
+      <button class="tab-btn" data-tab="wishlist">Wishlist</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+      {%if user[3]=="w"%}
+      <button class="tab-btn" data-tab="Work">Work</button>
+      {%endif%}
+    </div>
+
+    <div class="tab-content">
+      <div class="tab-section" id="profile">
+        <h3>Personal Information</h3>
+        <form action="{{ url_for('up') }}" method="GET">
+          <label>Full Name</label><input type="text" name="name" value="{{user[1]}}">
+          <label>Email</label><input type="email" name="email" value="{{user[5]}}">
+          <label>Phone</label><input type="tel" name="phone" value="{{user[6]}}">
+          <button type="submit">Save Changes</button>
+        </form>
+      </div>
+
+      <div class="tab-section" id="orders" style="display:none;">
+        <h3>Your Orders</h3>
+        <table>
+          <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Status</th>
+          </tr>
+          {% for o in orders %}
+          <tr>
+            <td>#{{ o[0] }}</td>
+            <td>{{ o[1] }}</td>
+            <td>{{ o[2] }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="tab-section" id="wishlist" style="display:none;">
+        <h3>Wishlist Items</h3>
+        <h3>Your Wishlist</h3>
+        <table>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th></th>
+          </tr>
+          {% for w in wishlist %}
+          <tr>
+            <td>{{ w[1] }}</td>
+            <td>₹{{ w[2] }}</td>
+            <td><a class="btn" href="/product/{{ w[0] }}">View</a></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="tab-section" id="settings" style="display:none;">
+        <h3>Change Password</h3>
+        <form action="/change-password" method="POST">
+          <input type="password" name="old" placeholder="Current Password" required>
+          <input type="password" name="new" placeholder="New Password" required>
+          <input type="password" name="confirm" placeholder="Confirm New Password" required>
+          <button class="btn" type="submit">Update</button>
+        </form>
+      </div>
+
+      <div class="tab-section seller-dashboard" id="Work" style="display:none;">
+        <h3>Company Dashboard</h3>
+        <div class="seller-grid">
+        <div class="seller-card">
+          <span class="card-title">Total Revenue</span>
+          <h4>₹18,72,600</h4>
+          <p class="card-sub positive">+12.4% this month</p>
+        </div>
+        <div class="seller-card">
+         <span class="card-title">Orders</span>
+      <h4>684</h4>
+      <p class="card-sub">9 new today</p>
+    </div>
+
+    <div class="seller-card warning">
+      <span class="card-title">Low Stock</span>
+      <h4>6</h4>
+      <p class="card-sub">Needs restock</p>
+    </div>
+
+    <div class="seller-card">
+      <span class="card-title">Avg Order Value</span>
+      <h4>₹1,320</h4>
+      <p class="card-sub">Stable</p>
+    </div>
+  </div>
+
+  <!-- MANAGEMENT SECTIONS -->
+  <div class="seller-grid two">
+
+    <!-- PRODUCTS -->
+    <div class="seller-card">
+      <span class="card-title">Product Management</span>
+      <p>Total Products: <strong>128</strong></p>
+      <p>Active Listings: <strong>114</strong></p>
+      <p>Out of Stock: <strong>14</strong></p>
+      <button>Add Product</button>
+      <button class="outline">Manage Products</button>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="seller-card">
+      <span class="card-title">Order Status</span>
+      <p>Processing: <strong>21</strong></p>
+      <p>Shipped: <strong>34</strong></p>
+      <p>Delivered: <strong>612</strong></p>
+      <p>Cancelled: <strong>8</strong></p>
+      <button>View Orders</button>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="seller-card warning">
+      <span class="card-title">Inventory Monitoring</span>
+      <p>Low Stock Alerts: <strong>6</strong></p>
+      <p>Fast Moving Products Detected</p>
+      <button>Inventory Manager</button>
+    </div>
+
+    <!-- RETURNS -->
+    <div class="seller-card">
+      <span class="card-title">Returns & Refunds</span>
+      <p>Pending Returns: <strong>3</strong></p>
+      <p>Refunds (This Month): <strong>₹7,400</strong></p>
+      <p>Return Rate: <strong>2.1%</strong></p>
+      <button>Manage Returns</button>
+    </div>
+
+    <!-- CUSTOMERS -->
+    <div class="seller-card">
+      <span class="card-title">Customer Insights</span>
+      <p>Total Customers: <strong>1,284</strong></p>
+      <p>Repeat Buyers: <strong>412</strong></p>
+      <p>Customer Retention: <strong>32%</strong></p>
+      <button>Customer Analytics</button>
+    </div>
+
+    <!-- PERFORMANCE -->
+    <div class="seller-card">
+      <span class="card-title">Store Performance</span>
+      <p>Order Success Rate: <strong>96.4%</strong></p>
+      <p>Avg Delivery Time: <strong>3.2 days</strong></p>
+      <p>Seller Rating: <strong>4.7 / 5</strong></p>
+      <button>Performance Report</button>
+    </div>
+
+  </div>
+</div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = document.querySelectorAll('.tab-section');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        contents.forEach(c => c.style.display='none');
+        document.getElementById(tab.dataset.tab).style.display='block';
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zioraa | Register</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="tab">
+      <a class="btn" href="/login">Login</a>
+      <a class="btn active" href="/register">Register</a>
+    </div>
+    <form id="register-form" action="{{ url_for('auth.add_user') }}" method="POST">
+      <div class="form-title">Create an Account</div>
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="pass" placeholder="Password" required>
+      <input type="password" name="cpass" placeholder="Confirm Password" required>
+      <button type="submit" class="abtn">Register</button>
+      <div class="switch">
+        Already have an account?
+        <a href="/login" style="color:#ffd700;">Login</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

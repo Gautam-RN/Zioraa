@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <title>{{ product.name }} | Zioraa</title>
+
+  <style>
+    .product-page {
+      padding: 120px 70px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+    }
+
+    /* ---------- IMAGE GALLERY ---------- */
+    .gallery {
+      background: linear-gradient(180deg, #181818, #101010);
+      border-radius: 20px;
+      border: 1px solid var(--border-soft);
+      padding: 26px;
+    }
+
+    .main-image {
+      width: 100%;
+      height: 350px;
+      border-radius: 16px;
+      background: url("{{ product.images[0] }}") center/cover no-repeat;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .thumbnail-row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .thumb {
+      width: 90px;
+      height: 90px;
+      border-radius: 12px;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--border-soft);
+      cursor: pointer;
+      transition: transform 0.3s, border 0.3s;
+    }
+
+    .thumb:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+    }
+
+    /* ---------- PRODUCT INFO ---------- */
+    .product-info h1 {
+      font-size: 36px;
+      margin-bottom: 14px;
+      background: var(--gold);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .price-box {
+      margin-bottom: 26px;
+    }
+
+    .original-price {
+      font-size: 16px;
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+    .original-price-only{
+      font-size: 30px;
+      font-weight: 600;
+      background: var(--gold);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .offer-price {
+      font-size: 30px;
+      font-weight: 600;
+      background: var(--gold);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.8;
+      opacity: 0.85;
+      margin-bottom: 30px;
+    }
+
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .meta div {
+      background: #141414;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .stock.in {
+      color: #6dff9e;
+    }
+
+    .stock.out {
+      color: #ff6d6d;
+    }
+
+    .buy-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .buy-actions .btn {
+      padding: 14px 32px;
+      border-radius: 30px;
+      border: 1px solid var(--border-soft);
+      background: transparent;
+      color: var(--silver);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .buy-actions .btn.primary {
+      background: var(--gold);
+      color: #000;
+      border: none;
+    }
+
+    .buy-actions .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ---------- REVIEWS ---------- */
+    .reviews {
+      grid-column: span 2;
+      margin-top: 90px;
+      padding-top: 60px;
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .reviews h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+      background: var(--gold);
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .review-card {
+      background: linear-gradient(180deg, #161616, #101010);
+      border: 1px solid var(--border-soft);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 18px;
+    }
+
+    .review-card h4 {
+      font-size: 15px;
+      margin-bottom: 6px;
+      color: var(--silver);
+    }
+
+    .review-card p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 900px) {
+      .product-page {
+        grid-template-columns: 1fr;
+        padding: 100px 30px;
+      }
+
+      .reviews {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}">
+      <h1>Zioraa</h1>
+    </div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/store">Store</a>
+      <a href="/custom">Customize</a>
+      <a href="/contact">Contact</a>
+      <div class="profile-menu">
+          <div class="profile-icon" onclick="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <hr>
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+    </nav>
+  </header>
+
+<section class="product-page">
+
+  <!-- IMAGE GALLERY -->
+  <div class="gallery">
+    <div class="main-image" id="mainImage"></div>
+
+    <div class="thumbnail-row">
+      {% for img in product.images %}
+  <div
+    class="thumb"
+    style="background-image: url('{{ url_for('static', filename=img) }}');"
+    onclick="changeImage('{{ url_for('static', filename=img) }}')">
+  </div>
+{% endfor %}
+    </div>
+  </div>
+
+  <!-- PRODUCT INFO -->
+  <div class="product-info">
+    <h1>{{ product.name }}</h1>
+
+    <div class="rating">
+      {{ '★' * (product.rating|round(0,'common')|int) + '☆' * (5 - (product.rating|round(0,'common')|int)) }}
+      <span>({{ product.rating }}/5)</span>
+    </div>
+
+    <div class="price-box">
+      {%if product.price==product.offer%}
+      <div class="original-price-only">₹{{ product.price }}</div>
+      {%elif product.price!=product.offer%}
+      <div class="original-price">₹{{ product.price }}</div>
+      <div class="offer-price">₹{{ product.offer }} Offer Price!!</div>
+      {%endif%}
+    </div>
+
+    <div class="description">
+      {{ product.decrp }}
+    </div>
+
+    <div class="meta">
+      <div>Supplier: <strong>{{ product.supplier }}</strong></div>
+      <div class="stock in">Stock: {{ product.stock }} available</div>
+    </div>
+
+    
+    <div class="buy-actions">  
+    </div>
+    <div class="buy-actions">
+      <a class="btn primary" href="{{url_for('payment.checkout', pid=product.pid)}}">Buy Now</a>
+      <a class="btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Add to Cart</a>
+      <a class="btn" href="{{url_for('products.add_wish', pid=product.pid)}}">Wishlist</a>
+    </div>
+  </div>
+
+  <!-- REVIEWS -->
+  <div class="reviews">
+    <h2>Customer Reviews</h2>
+
+    {% for review in product.reviews %}
+    <div class="review-card">
+      <h4>{{ review.user }} 
+        {{ '★' * (review.star|round(0,'common')|int) + '☆' * (5 - (review.star|round(0,'common')|int)) }}
+        ({{ review.star }}/5)
+      </h4>
+      <p>{{ review.comment }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+</section>
+
+
+  <footer>
+    © 2026 Zioraa. All rights reserved.
+  </footer>
+  <script src="{{ url_for('static', filename='js/common.js')}}"></script>
+
+<script>
+  const main = document.getElementById("mainImage");
+
+  // initial image
+  main.style.backgroundImage =
+    "url('{{ url_for('static', filename=product.images[0]) }}')";
+
+  function changeImage(src) {
+    main.style.backgroundImage = `url('${src}')`;
+  }
+</script>
+
+</body>
+</html>

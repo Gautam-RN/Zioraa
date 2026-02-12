@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Zioraa Checkout</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Poppins", Arial, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#eee;
+}
+
+.box{
+  width:100%;
+  max-width:420px;
+  background: linear-gradient(180deg,#111,#0b0b0b);
+  padding:35px;
+  border-radius:22px;
+  box-shadow:
+    0 0 45px rgba(230,193,90,0.08),
+    inset 0 0 18px rgba(255,255,255,0.02);
+}
+
+h2{
+  text-align:center;
+  color:#e6c15a;
+  font-weight:600;
+  margin-bottom:25px;
+}
+
+input, textarea{
+  width:100%;
+  padding:12px 14px;
+  margin-top:12px;
+  background:#0f0f0f;
+  border:1px solid #222;
+  border-radius:10px;
+  color:#eee;
+  font-size:14px;
+}
+
+textarea{
+  resize:none;
+  min-height:70px;
+}
+
+input::placeholder,
+textarea::placeholder{
+  color:#777;
+}
+
+input:focus,
+textarea:focus{
+  outline:none;
+  border-color:#e6c15a;
+  box-shadow:0 0 8px rgba(230,193,90,0.35);
+}
+
+.products{
+  margin-top:20px;
+}
+
+.products table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.products th{
+  text-align:left;
+  color:#e6c15a;
+  font-weight:500;
+  padding-bottom:8px;
+}
+
+.products td{
+  padding:10px 0;
+}
+
+.products tr{
+  border-top:1px solid #222;
+}
+
+.products td:last-child,
+.products th:last-child{
+  text-align:right;
+}
+
+.payment{
+  margin-top:20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.pay-option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  cursor:pointer;
+  color:#ddd;
+  font-size:15px;
+}
+
+.pay-option input[type="radio"]{
+  width:18px;
+  height:18px;
+  accent-color:#e6c15a;
+  margin:0;
+}
+
+.total{
+  text-align:center;
+  font-size:20px;
+  margin:22px 0;
+  color:#e6c15a;
+  font-weight:500;
+}
+
+.btn{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+  font-weight:600;
+  background: linear-gradient(135deg,#f0d27a,#cfa640);
+  color:#000;
+  cursor:pointer;
+  transition:all 0.25s ease;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(230,193,90,0.45);
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Checkout</h2>
+
+  <form method="POST">
+    <input name="name" placeholder="Name" value="{{ data.user[0] }}" required>
+    <input name="phone" placeholder="Phone" value="{{ data.user[1] }}" required>
+    <textarea name="address" placeholder="Address" required>{{ data.user[2] }}</textarea>
+
+    <div class="products">
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in data.product %}
+          <tr>
+            <td>{{ product[0] }}</td>
+            <td>₹{{ product[1] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <input type="hidden" name="amount" value="{{ total }}">
+
+    <!-- <div class="payment">
+      <label class="pay-option">
+        <input type="radio" name="pay" value="online" checked>
+        <span>Pay Online</span>
+      </label>
+
+      <label class="pay-option">
+        <input type="radio" name="pay" value="cod">
+        <span>Cash on Delivery</span>
+      </label>
+    </div> -->
+
+    <div class="total">Total: ₹{{ total }}</div>
+
+    <button type="button" class="btn" onclick="pay(event)">Place Order</button>
+  </form>
+</div>
+
+<script>
+function pay(e){
+  e.preventDefault();
+  const payMode = "online";
+  const form = document.querySelector("form");
+  form.action = "/payment/create";
+  form.submit();
+}
+</script>
+
+</body>
+</html>

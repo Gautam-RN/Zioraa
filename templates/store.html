@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/store.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <title>Zioraa | Store</title>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/logo.png') }}">
+      <h1>Zioraa</h1>
+    </div>
+    <section class="store-search">
+      <input type="text" id="searchInput" placeholder="Search products ( / )">
+    </section>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/store">Store</a>
+      <a href="/custom">Customize</a>
+      <a href="/contact">Contact</a>
+      <div class="profile-menu">
+          <div class="profile-icon" onclick="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <hr>
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+    </nav>
+  </header>
+  <section class="store-hero">
+    <h2>Explore the Store</h2>
+    <p>Premium designs crafted for your unique style</p>
+  </section>
+  <section class="store-container">
+    <aside class="filters">
+    <h3>Filters</h3>
+    <div class="filter-group">
+      <label style="font-size:13px; opacity:0.8;">Price Range</label>
+      <div class="price-inputs">
+        <input type="number" id="minPrice" placeholder="Min ₹">
+        <input type="number" id="maxPrice" placeholder="Max ₹">
+      </div>
+    </div>
+    {%if ctgy%}
+    <div class="filter-group">
+      {%for i in ctgy%}
+      <label><input type="checkbox" class="filter-category" value="{{i[0].lower()}}"> {{i[0].title()}}</label>
+      {%endfor%}
+    </div>
+    <button id="clearFilters"style="width:100%;padding:10px;border-radius:22px;background:transparent;border:1px solid var(--border-soft);color:var(--silver);cursor:pointer;">
+    Clear Filters</button>
+    {%else%}
+    <h3>No Filters</h3>
+    {%endif%}
+    </aside>
+    {%if products%}
+    <div><div class="store-products">
+      {% for product in products %}
+      <div class="product-card" data-category="{{product.ctgy}}" data-price="{{product.price}}" data-link="{{ url_for('products.product_detail', pid=product.pid) }}">
+        <img class="product-image" src="{{url_for('static', filename=product.images[0])}}">
+        <div class="product-content">
+          <h3>{{product.prodname}}</h3>
+          <p>{{product.decrp}}</p>
+          <div class="price">₹{{product.price}}</div>
+          <div class="product-actions">
+            <a class="btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Add to Cart</a>
+            <a class="btn" href="{{url_for('products.add_wish', pid=product.pid)}}">Add to Wishlist</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <p id="noResults">No products match your filters.</p></div>
+    {%else%}
+    <p>No Products to display</p>
+    {%endif%}
+  </section>
+  <footer>© 2026 Zioraa. All rights reserved.</footer>
+  <script src="{{ url_for('static', filename='js/store.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/common.js')}}"></script>
+</body>
+</html>

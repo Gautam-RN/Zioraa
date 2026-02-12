@@ -1,0 +1,110 @@
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #1a1a1a;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      width: 350px;
+    }
+
+    .container h2 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    .btn {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #ffd700;
+      color: #0d0d0d;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #e6c200;
+    }
+
+    .switch {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #bbb;
+    }
+
+    .abtn {
+      padding: 14px 42px;
+      border-radius: 30px;
+      background: var(--gold);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .form-title {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #ffd700;
+    }
+
+    .tab {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 20px;
+    }
+
+    .tab .btn {
+      background: none;
+      color: #bbb;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      padding-bottom: 5px;
+      font-size: 16px;
+    }
+
+    .tab .btn.active {
+      color: #ffd700;
+      border-bottom: 2px solid #ffd700;
+    }

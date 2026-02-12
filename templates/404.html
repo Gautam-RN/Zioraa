@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ code }} | Zioraa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { min-height: 100vh; background: radial-gradient(circle at top, #1a1a1a, #0b0b0b); display: flex; align-items: center; justify-content: center; color: #f5f5f5; font-family: "Inter", sans-serif; }
+        .wrapper { text-align: center; padding: 50px 42px; max-width: 620px; border: 1px solid rgba(255, 215, 160, 0.15); border-radius: 20px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); box-shadow: 0 30px 60px rgba(0,0,0,0.6); backdrop-filter: blur(14px); }
+        .brand { font-family: "Playfair Display", serif; letter-spacing: 3px; font-size: 14px; color: #d4af37; margin-bottom: 16px; }
+        .code { font-family: "Playfair Display", serif; font-size: 108px; font-weight: 700; color: #d4af37; line-height: 1; margin-bottom: 8px; }
+        .title { font-family: "Playfair Display", serif; font-size: 28px; margin-bottom: 12px; }
+        .desc { font-size: 15px; line-height: 1.6; opacity: 0.85; margin-bottom: 30px; }
+        .steps { text-align: left; margin: 0 auto 35px; max-width: 460px; font-size: 14px; line-height: 1.7; opacity: 0.9; }
+        .steps li { margin-bottom: 10px; }
+        .btn { display: inline-block; padding: 14px 34px; text-decoration: none; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; border-radius: 30px; background: linear-gradient(135deg, #d4af37, #f6d77c); color: #0b0b0b; font-weight: 500; transition: all 0.35s ease; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4); }
+        .divider { width: 70px; height: 1px; background: rgba(212, 175, 55, 0.45); margin: 38px auto 26px; }
+        .contact { font-size: 14px; line-height: 1.8; opacity: 0.9; }
+        .contact strong { color: #d4af37; font-weight: 500; }
+        .contact a { color: #d4af37; text-decoration: none; }
+        .contact a:hover { text-decoration: underline; }
+        .footer { margin-top: 28px; font-size: 12px; letter-spacing: 1px; opacity: 0.6; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="brand">ZIORAA</div>
+        <div class="code">{{ code }}</div>
+        <div class="title">{{ title }}</div>
+        <div class="desc">{{ message }}</div>
+
+        {% if steps %}
+        <ul class="steps">
+            {% for step in steps %}
+            <li>{{ step }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <a href="/" class="btn">Back to Home</a>
+
+        <div class="divider"></div>
+
+        <div class="contact">
+            <strong>Need assistance?</strong><br>
+            Our concierge team is happy to help.<br><br>
+            📞 <a href="tel:+911234567890">+91 12345 67890</a><br>
+            ✉️ <a href="mailto:support@zioraa.store">support@zioraa.store</a>
+        </div>
+
+        {% if e %}
+        <p style="margin-top:20px; opacity:0.7; font-size:13px;">Debug info: {{ e }}</p>
+        {% endif %}
+
+        <div class="footer">© 2026 zioraa.store</div>
+    </div>
+</body>
+</html>
