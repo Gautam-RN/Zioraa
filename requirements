@@ -2,5 +2,5 @@ flask
 cashfree-pg
 python-dotenv
 gunicorn
-mysql.connector
 django
+psycopg2-binary
