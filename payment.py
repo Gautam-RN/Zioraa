@@ -4,24 +4,14 @@ from cashfree_pg.api_client import Cashfree
 from dotenv import load_dotenv
 import os
 import time
-import mysql.connector as sql
 
-#load_dotenv()
-
-
-
-Cashfree.XClientId = "CF10767318D5TGUSB28GPS73D9KPK0"
-Cashfree.XClientSecret = "cfsk_ma_test_fd767d6f2eb6b761473ed5a165258a05_915bd019"
-Cashfree.XEnvironment = Cashfree.SANDBOX
-
-# 🔥 FORCE STRING
-Cashfree.XApiVersion = "2023-08-01"
+load_dotenv()
 
 # Initialize Cashfree
-""" Cashfree.XClientId = os.getenv("CASHFREE_APP_ID")
+Cashfree.XClientId = os.getenv("CASHFREE_APP_ID")
 Cashfree.XClientSecret = os.getenv("CASHFREE_SECRET_KEY")
 Cashfree.XEnvironment = Cashfree.SANDBOX
-Cashfree.XApiVersion = os.getenv("CASHFREE_API_VERSION", "2023-08-01") """
+Cashfree.XApiVersion = os.getenv("CASHFREE_API_VERSION", "2023-08-01") 
 
 payment = Blueprint("payment", __name__)
 
@@ -118,3 +108,4 @@ def cod_order():
     """
     # TODO: Save order to DB in future
     return render_template("success.html")
+
