@@ -3,3 +3,4 @@ cashfree-pg
 python-dotenv
 gunicorn
 mysql.connector
+django
