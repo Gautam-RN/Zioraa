@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, render_template_string
-import mysql.connector as sql
 
 auth = Blueprint("auth", __name__)
 
@@ -164,3 +163,4 @@ def change_password():
 
     except Exception:
         return render_template("404.html"), 500
+
