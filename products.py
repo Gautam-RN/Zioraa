@@ -37,7 +37,7 @@ def get_prod():
             cur.execute("SELECT link FROM images WHERE pid=%s", (prod["pid"],))
             data=cur.fetchall()
             if data:
-                imgs = cur.fetchall()
+                imgs = data
             else:
                 imgs = (("black.png",))
             l=[]
@@ -49,7 +49,7 @@ def get_prod():
             cur.execute("Select sum(star),count(*) from review where pid=%s", (prod["pid"],))
             prod['rating']=0
             s,n=cur.fetchone()
-            if s is not None or n!=0:
+            if s is not None and n!=0:
                 prod['rating']=round(s/n)
             prods.append(prod)
     finally:
@@ -96,6 +96,8 @@ def product_detail(pid):
         "ctgy","collection"
         )
         data = cur.fetchone()
+        if not data:
+            abort(404)
         prod = dict(zip(heading, data))
         prod['offer']=float(prod['price'])-(float(prod['price'])*float(prod['offer']))
         prod["prodname"] = prod["prodname"].title()
@@ -158,4 +160,5 @@ def add_cart(pid):
         db.commit()
         return alert("Added to cart!")
     finally:
+
         db.close()
