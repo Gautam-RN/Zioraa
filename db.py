@@ -1,22 +1,12 @@
-import mysql.connector as sql
-from mysql.connector import errorcode
-from flask import current_app
+import psycopg2
 import os
-
-DB_NAME = "zioraa"
 
 def get_db():
     try:
-        db = sql.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database=DB_NAME,
-            charset="utf8"
-        )
-        return db, db.cursor()
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
+        return conn, conn.cursor()
+    except:
+        return None,None
 
-    except sql.Error as e:
-        print("DB ERROR:", e)
-        return None, None
+
 
