@@ -1,0 +1,4 @@
+flask
+cashfree-pg
+python-dotenv
+mysql.connector
