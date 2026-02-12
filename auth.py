@@ -23,7 +23,7 @@ def authenticate():
         email = request.form['email']
         password = request.form['password']
 
-        cur.execute("SELECT uid, pass FROM users WHERE email=%s", (email,))
+        cur.execute("SELECT uid, pass FROM users WHERE email = %s;", (email,))
         user = cur.fetchone()
 
         if not user or user[1] != password:
@@ -59,17 +59,18 @@ def add_user():
         if password != cpassword:
             return render_template_string("<script>alert('Passwords do not match');history.back()</script>")
 
-        cur.execute("SELECT uid FROM users WHERE email=%s", (email,))
+        cur.execute("SELECT uid FROM users WHERE email = %s;", (email,))
         if cur.fetchone():
             return render_template_string("<script>alert('Email already exists');history.back()</script>")
 
         cur.execute(
-            "INSERT INTO users (username, email, pass) VALUES (%s,%s,%s)",
+            "INSERT INTO users (username, email, pass) VALUES (%s, %s, %s);",
             (name, email, password)
         )
-        db.commit()
 
-        session['uid'] = cur.lastrowid
+        session['uid'] = cur.fetchone()[0]
+        db.commit()
+        
         return redirect(url_for('auth.profile'))
 
     except Exception:
@@ -86,21 +87,13 @@ def profile():
         cur.execute("SELECT * FROM users WHERE uid=%s", (session['uid'],))
         user = cur.fetchone()
 
-        cur.execute("SELECT * FROM orders WHERE uid=%s ORDER BY oid DESC", (session['uid'],))
+        cur.execute("SELECT * FROM orders WHERE uid = %s ORDER BY oid DESC;", (session['uid'],))
         orders = cur.fetchall()
 
-        cur.execute("""
-            SELECT products.pid, products.prodname, products.price, products.offer
-            FROM wish, products
-            WHERE products.pid=wish.pid AND wish.uid=%s
-        """, (session['uid'],))
+        cur.execute("""SELECT products.pid, products.prodname, products.price, products.offer FROM wish JOIN products ON products.pid = wish.pid WHERE wish.uid = %s;""", (session['uid'],))
         wishlist = cur.fetchall()
 
-        cur.execute("""
-            SELECT products.pid, products.prodname, products.price, products.offer
-            FROM cart, products
-            WHERE products.pid=cart.pid AND cart.uid=%s
-        """, (session['uid'],))
+        cur.execute("""SELECT products.pid, products.prodname, products.price, products.offer FROM cart JOIN products ON products.pid = cart.pid WHERE cart.uid = %s;""", (session['uid'],))
         cart = cur.fetchall()
         t=[]
         for i in cart:
@@ -123,7 +116,7 @@ def update_profile():
 
     try:
         cur.execute(
-            "UPDATE users SET username=%s, phone=%s, address=%s WHERE uid=%s",
+            "UPDATE users SET username = %s, phone = %s, address = %s WHERE uid = %s;",
             (
                 request.form['name'],
                 request.form['phone'],
@@ -152,15 +145,16 @@ def change_password():
         if new != confirm:
             return render_template_string("<script>alert('Passwords do not match');history.back()</script>")
 
-        cur.execute("SELECT pass FROM users WHERE uid=%s", (session['uid'],))
+        cur.execute("SELECT pass FROM users WHERE uid=%s;", (session['uid'],))
         if cur.fetchone()[0] != old:
             return render_template_string("<script>alert('Wrong password');history.back()</script>")
 
-        cur.execute("UPDATE users SET pass=%s WHERE uid=%s", (new, session['uid']))
+        cur.execute("UPDATE users SET pass=%s WHERE uid=%s;", (new, session['uid']))
         db.commit()
 
         return redirect(url_for('auth.profile'))
 
     except Exception:
         return render_template("404.html"), 500
+
 
