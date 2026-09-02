@@ -1,175 +1,182 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <title>Zioraa</title>
+  <title>Zioraa | Premium Print on Demand</title>
 </head>
 <body>
   <header>
-    <div class="flex" style="justify-content: space-between; ">
-      <div class="cart-icon" onclick="window.location.href='/cart'">
-        <i class="fa fa-shopping-cart"></i>
+    <div class="header-inner">
+      <div class="brand-wrap">
+        <a href="/" class="brand-mark">
+          <img src="{{ url_for('static', filename='images/image.png') }}" alt="Zioraa">
+        </a>
       </div>
-      <img src="{{ url_for('static', filename='images/image.png') }}">
-      <div class="profile-menu">
-        <div class="profile-icon" onclick="toggleProfileMenu()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
-          </svg>
+
+      <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/store">Store</a>
+        <a href="/custom">Customize</a>
+        <a href="/contact">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <div class="profile-menu">
+          <div class="profile-icon" onclick="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Register</a>
+            <hr>
+            <a href="{{ url_for('auth.profile') }}">My Profile</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+          </div>
         </div>
-        <div class="profile-dropdown" id="profileDropdown">
-          <a href="{{ url_for('auth.login') }}">Login</a>
-          <a href="{{ url_for('auth.register') }}">Register</a>
-          <hr>
-          <a href="{{ url_for('auth.profile') }}">My Profile</a>
-          <a href="{{ url_for('auth.logout') }}">Logout</a>
+
+        <div class="cart-icon" onclick="window.location.href='/cart'" aria-label="Shopping cart">
+          <i class="fa fa-shopping-cart"></i>
         </div>
       </div>
     </div>
-    
-    <nav class="flex">
-      <a href="/">Home</a>
-      <a href="/store">Store</a>
-      <a href="/custom">Customize</a>
-      <a href="/contact">Contact</a>
-    </nav>
   </header>
-  <section class="hero">
-    <div class="hero-content">
-      <h2>Design Your Signature Look</h2>
-      <p>Your ideas, crafted into premium wearable fashion.</p>
-    </div>
-    <a class="store-btn" href="/store">Shop Now</a>
-  </section>
-  <section class="featured">
 
-    <!-- 💻 DESKTOP VIEW -->
-    <div class="lap">
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <span class="eyebrow">Premium print on demand</span>
+          <h2>Design your story in <span>signature style</span>.</h2>
+          <p>Thoughtful apparel, elevated merch, and custom essentials crafted for brands, creators, and everyday expression.</p>
+          <div class="hero-actions">
+            <a class="store-btn" href="/store">Shop Collection</a>
+            <a class="secondary-btn" href="/custom">Customize Design</a>
+          </div>
+
+          <ul class="hero-stats">
+            <li><strong>4.9/5</strong><span>Brand rating</span></li>
+            <li><strong>2k+</strong><span>Orders shipped</span></li>
+            <li><strong>48h</strong><span>Fast fulfilment</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card">
+            <img src="{{ url_for('static', filename='images/new_drop/new-drop.png') }}" alt="Zioraa poster of the week">
+            <div class="hero-card-badge">
+              <strong>This Month</strong>
+              <span>Get your print-on-demand now!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="section-header">
+        <h2><span>About</span> Zioraa</h2>
+        <p>Design-led essentials made for people who want their everyday pieces to say something.</p>
+      </div>
+
+      <div class="about-content">
+        <div class="about-brandmark">
+          <img src="{{ url_for('static', filename='images/image.png') }}" alt="Zioraa logo">
+          <span>Made to be remembered</span>
+        </div>
+        <div class="about-copy">
+          <p>Zioraa is a print-on-demand studio for expressive apparel, useful accessories, and thoughtful custom drops.</p>
+          <p>We bring together considered design, dependable quality, and small-batch energy so every piece feels personal, never mass-produced.</p>
+          <div class="about-points">
+            <span>Original design</span>
+            <span>Quality checked</span>
+            <span>Made for you</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured">
+      <div class="section-header">
+        <h2><span>Featured</span> products</h2>
+        <p>Curated bestsellers crafted for premium everyday wear and statement pieces.</p>
+      </div>
+
       {% if products %}
-      <h2>Featured Products</h2>
-
       <div class="product-grid">
         {% for product in products %}
         <div class="product-card">
-          <div class="product-image" style="background-image: url('{{url_for('static', filename=product.images[0])}}'">
-            <img src="{{url_for('static', filename=product.images[0])}}" alt="">
+          <div class="product-image" style="background-image: url('{{ url_for('static', filename=product.images[0]) }}')">
+            <img src="{{ url_for('static', filename=product.images[0]) }}" alt="{{ product.prodname }}">
           </div>
           <div class="product-content">
-            <h3>{{product.prodname}}</h3>
+            <h3>{{ product.prodname }}</h3>
             <div class="rating">
               {{ '★' * product.rating + '☆' * (5 - product.rating) }}
               <span>({{ product.rating }}/5)</span>
             </div>
-            <div class="price">₹{{product.price}}</div>
-            <a href="{{ url_for('products.product_detail', pid=product.pid) }}" class="btn">Check it</a>
+            <div class="price">₹{{ product.price }}</div>
+            <a href="{{ url_for('products.product_detail', pid=product.pid) }}" class="btn">View Product</a>
           </div>
         </div>
         {% endfor %}
       </div>
 
-      <br>
-      <a class="store-btn" href="/store">Go to Store</a>
+      <div class="store-cta">
+        <a class="store-btn" href="/store">Go to Store</a>
+      </div>
       {% endif %}
-    </div>
+    </section>
 
-    <!-- 📱 MOBILE VIEW (SLIDER) -->
-    <div class="mob">
-      <h2>Featured Products</h2>
+    <section class="contact">
+      <div class="section-header">
+        <h2><span>Let’s</span> create</h2>
+        <p>Need a custom drop, branded merch, or a standout design direction? We’re ready to help.</p>
+      </div>
 
-      <div class="slider">
-        <div class="slides" id="slides">
-          {% for product in products %}
-          <div class="slide">
-            <div class="product-card">
-              <img class="product-image" src="{{url_for('static', filename=product.images[0])}}">
-              <div class="product-content">
-                <h3>{{product.prodname}}</h3>
-                <div class="rating">
-                  {{ '★' * product.rating + '☆' * (5 - product.rating) }}
-                  <span>({{ product.rating }}/5)</span>
-                </div>
-                <div class="price">₹{{product.price}}</div>
-                <a href="{{ url_for('products.product_detail', pid=product.pid) }}" class="btn">Check it</a>
-              </div>
+      <div class="contact-container">
+        <div class="contact-left">
+          <div class="map-title">Find us</div>
+          <div class="map">
+            <iframe src="https://www.google.com/maps?q=Kerala,India&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div class="social">
+            <a href="https://www.instagram.com/zioraa_groups/" target="_blank">Instagram</a>
+            <a href="https://www.youtube.com/@Zioraa_store" target="_blank">YouTube</a>
+            <a href="https://x.com/zioraagroup" target="_blank">X (Twitter)</a>
+          </div>
+        </div>
+
+        <div class="contact-right">
+          <form class="contact-full" action="{{ url_for('products.msg') }}" method="POST">
+            <h3>Send a message</h3>
+            <div class="field">
+              <input type="text" name="name" placeholder="Your Name" required>
             </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <button class="arr prev" onclick="prevSlide()">❮</button>
-        <button class="arr next" onclick="nextSlide()">❯</button>
-      </div>
-
-      <br>
-      <a class="store-btn" href="/store">Go to Store</a>
-    </div>
-
-  </section>
-  {%if collections%}
-  <section class="collections">
-    <h2>Our Collections</h2>
-
-    <div class="collection-slider">
-      
-      <button class="c-btn prev" onclick="moveSlide(-1)">❮</button>
-
-      <div class="collection-track" id="collectionTrack">
-        {%for i in collections%}
-        <a href="/collections/{{ i.cid }}" class="collection-link">
-          <div class="collection-card">
-            <img src="{{url_for('static', filename=i.image)}}">
-            <div class="collection-overlay">{{i.name}}</div>
-          </div>
-        </a>
-        {%endfor%}
-      </div>
-
-      <button class="c-btn next" onclick="moveSlide(1)">❯</button>
-
-    </div>
-  </section>
-  {%endif%}
-  <section class="contact">
-    <div class="contact-container">
-      <div class="contact-left">
-        <div class="map-title">FIND US</div>
-        <div class="map">
-          <iframe src="https://www.google.com/maps?q=Kerala,India&output=embed"></iframe>
-        </div>
-        <div class="social">
-          <a href="https://www.instagram.com/zioraa_groups/">Instagram</a>
-          <a href="https://www.youtube.com/@Zioraa_store">Youtube</a>
-          <a href="https://x.com/zioraagroup">X (twitter)</a>
+            <div class="field">
+              <input type="email" name="mail" placeholder="Your Email" required>
+            </div>
+            <div class="field">
+              <textarea rows="5" name="msg" placeholder="Your Message" required></textarea>
+            </div>
+            <button type="submit" class="btn">Send</button>
+          </form>
         </div>
       </div>
+    </section>
+  </main>
 
-      <div class="contact-right">
-        <form class="contact-full" action="{{ url_for('products.msg') }}" method="POST">
-      <h3>Send a Message</h3>
-      <div class="field">
-        <input type="text" name="name" placeholder="Your Name" required>
-      </div>
-      <div class="field">
-        <input type="email" name="mail" placeholder="Your Email" required>
-      </div>
-      <div class="field">
-        <textarea rows="5" name="msg" placeholder="Your Message" required></textarea>
-      </div>
-      <button type="submit" class="btn">Send</button>
-    </form>
-      </div>
-    </div>
-  </section>
   <footer>
     © 2026 Zioraa. All rights reserved.
   </footer>
-  <script src="{{ url_for('static', filename='js/common.js')}}"></script>
-  <script src="{{ url_for('static', filename='js/home/collection.js')}}"></script>
-  <script src="{{ url_for('static', filename='js/home/featured.js')}}"></script>
+
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/home/featured.js') }}"></script>
 </body>
 </html>

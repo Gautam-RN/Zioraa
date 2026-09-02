@@ -13,18 +13,27 @@ def alert(msg):
     )
 
 
-def get_prod(end, start=0):
+def get_prod(end, start=0, randomize=False):
     db, cur = get_db()
     if not cur:
         return []
 
     try:
-        cur.execute("""
-            SELECT pid,prodname,description,stock,price,offer,sold,supplier,catgy,collection
-            FROM products
-            WHERE pid <= %s AND pid > %s
-            ORDER BY sold
-            """, (end, start))
+        if randomize:
+            cur.execute("""
+                SELECT pid,prodname,description,stock,price,offer,sold,supplier,catgy,collection
+                FROM products
+                WHERE stock > 0
+                ORDER BY RANDOM()
+                LIMIT %s
+                """, (end,))
+        else:
+            cur.execute("""
+                SELECT pid,prodname,description,stock,price,offer,sold,supplier,catgy,collection
+                FROM products
+                WHERE pid <= %s AND pid > %s
+                ORDER BY sold
+                """, (end, start))
         rows = cur.fetchall()
         if not rows:
             return []
@@ -70,8 +79,21 @@ def get_prod(end, start=0):
 # ---------- HOME ----------
 @products.route('/')
 def home():
-    data=get_prod(3)
+    data=get_prod(3, randomize=True)
     db,cur=get_db()
+    if not cur:
+        return render_template(
+            "404.html",
+            code=503,
+            title="Store temporarily unavailable",
+            message="We are having trouble connecting to the store right now. Please try again in a moment.",
+            steps=[
+                "Refresh the page after a few seconds",
+                "Check your internet connection",
+                "Contact our team if the issue continues",
+            ],
+            e="Database connection unavailable",
+        ), 503
     cur.execute("Select * from collection")
     cltn=cur.fetchall()
     headings=['cid','name','image']
