@@ -107,3 +107,346 @@ section {
     padding: 60px 20px;
   }
 }
+
+/* Premium customize workspace */
+body {
+  background:
+    radial-gradient(circle at 88% 10%, rgba(215, 175, 93, 0.12), transparent 25%),
+    linear-gradient(180deg, #0b0d0d 0%, #101416 100%);
+}
+
+header {
+  background: rgba(10, 12, 14, 0.92);
+}
+
+.custom-header-inner {
+  width: min(1280px, 100%);
+  min-height: 76px;
+  margin: 0 auto;
+  padding: 12px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.custom-header-inner .logo {
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.custom-header-inner .logo img {
+  width: 132px;
+}
+
+.custom-header-inner nav {
+  flex: 1;
+}
+
+.custom-header-inner nav a.active,
+.custom-header-inner nav a:hover {
+  color: #f1d487;
+}
+
+.custom-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.cart-link {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: #f1d487;
+  font-size: 17px;
+}
+
+.customize {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0 28px 100px;
+}
+
+.custom-hero {
+  min-height: 470px;
+  margin: 0;
+  padding: 92px 0 72px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  align-items: center;
+  gap: 80px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+}
+
+.custom-kicker {
+  color: #f1d487;
+  font-size: 0.7rem;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.custom-hero h1 {
+  max-width: 700px;
+  margin: 18px 0 16px;
+  color: #f8f4eb;
+  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  background: none;
+  -webkit-text-fill-color: initial;
+}
+
+.custom-hero p {
+  max-width: 560px;
+  color: rgba(232, 225, 214, 0.78);
+  font-size: 1.05rem;
+}
+
+.custom-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 26px;
+  margin-top: 34px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.custom-steps b {
+  margin-right: 7px;
+  color: #f1d487;
+}
+
+.custom-hero-mark {
+  min-height: 270px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  border: 1px solid rgba(241, 212, 135, 0.38);
+  background: linear-gradient(145deg, rgba(241, 212, 135, 0.1), rgba(18, 22, 23, 0.2));
+}
+
+.custom-hero-mark img {
+  width: min(230px, 75%);
+  filter: brightness(0) invert(1);
+}
+
+.custom-hero-mark span {
+  color: #f1d487;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.custom-builder {
+  padding: 86px 0 0;
+}
+
+.builder-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 28px;
+}
+
+.builder-heading h2,
+.form-heading h2 {
+  margin-top: 9px;
+  color: #f8f4eb;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+}
+
+.builder-heading p,
+.form-heading p {
+  max-width: 360px;
+  color: rgba(232, 225, 214, 0.68);
+}
+
+.design-grid {
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 76px;
+}
+
+.design-card {
+  height: 250px;
+  border-radius: 3px;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: #171b1c;
+}
+
+.design-card:focus,
+.design-card:hover {
+  outline: none;
+  border-color: #f1d487;
+  box-shadow: 0 20px 50px rgba(215, 175, 93, 0.15);
+  transform: translateY(-5px);
+}
+
+.design-card img {
+  filter: brightness(0.8) saturate(0.8);
+}
+
+.design-card .overlay {
+  padding: 18px;
+  background: linear-gradient(transparent, rgba(5, 7, 8, 0.94));
+}
+
+.design-card .overlay span {
+  display: block;
+  margin-bottom: 5px;
+  color: #f1d487;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.design-card .overlay strong {
+  color: #f8f4eb;
+  font-size: 1.05rem;
+}
+
+.custom-form-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 42px;
+  border: 1px solid rgba(241, 212, 135, 0.25);
+  border-radius: 3px;
+  background: rgba(18, 22, 23, 0.76);
+}
+
+.form-heading {
+  margin-bottom: 30px;
+  text-align: left;
+}
+
+.form-heading h2 {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+}
+
+.custom-form {
+  gap: 18px;
+}
+
+.custom-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.custom-form input,
+.custom-form textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  background: rgba(7, 10, 11, 0.72);
+  color: #f8f4eb;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.custom-form input:focus,
+.custom-form textarea:focus {
+  outline: none;
+  border-color: rgba(241, 212, 135, 0.7);
+  box-shadow: 0 0 0 3px rgba(241, 212, 135, 0.08);
+}
+
+.custom-form textarea {
+  resize: vertical;
+}
+
+.custom-form .btn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 15px 20px;
+  border-radius: 3px;
+  background: #f1d487;
+  color: #151311;
+  font-weight: 700;
+}
+
+.custom-form .btn span {
+  margin-left: 8px;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 900px) {
+  .custom-header-inner {
+    padding-inline: 20px;
+  }
+
+  .customize {
+    padding-inline: 20px;
+  }
+
+  .custom-hero {
+    grid-template-columns: 1fr 0.65fr;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 700px) {
+  .custom-header-inner {
+    min-height: 64px;
+  }
+
+  .custom-header-inner .logo img {
+    width: 104px;
+  }
+
+  .custom-header-inner nav {
+    display: none;
+  }
+
+  .custom-hero {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    padding: 72px 0 54px;
+  }
+
+  .custom-hero-mark {
+    min-height: 210px;
+  }
+
+  .custom-builder {
+    padding-top: 64px;
+  }
+
+  .builder-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .custom-form-section {
+    padding: 26px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

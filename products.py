@@ -13,27 +13,48 @@ def alert(msg):
     )
 
 
-def get_prod(end, start=0, randomize=False):
-    db, cur = get_db()
+def get_prod(end, start=0, randomize=False, connection=None, exclude_pid=None):
+    owns_connection = connection is None
+    db, cur = connection or get_db()
     if not cur:
         return []
 
     try:
+        query = """
+            SELECT p.pid, p.prodname, p.description, p.stock, p.price,
+                   p.offer, p.sold, p.supplier, p.catgy, p.collection,
+                   COALESCE(image_data.links, ARRAY['black.png']) AS image_links,
+                   COALESCE(rating_data.total_stars, 0) AS total_stars,
+                   COALESCE(rating_data.review_count, 0) AS review_count
+            FROM products AS p
+            LEFT JOIN LATERAL (
+                SELECT ARRAY_AGG(i.link ORDER BY i.iid) AS links
+                FROM images AS i
+                WHERE i.pid = p.pid
+            ) AS image_data ON TRUE
+            LEFT JOIN LATERAL (
+                SELECT SUM(r.star) AS total_stars, COUNT(*) AS review_count
+                FROM review AS r
+                WHERE r.pid = p.pid
+            ) AS rating_data ON TRUE
+            {where_clause}
+            {order_clause}
+            LIMIT %s
+        """
+
         if randomize:
-            cur.execute("""
-                SELECT pid,prodname,description,stock,price,offer,sold,supplier,catgy,collection
-                FROM products
-                WHERE stock > 0
-                ORDER BY RANDOM()
-                LIMIT %s
-                """, (end,))
+            where_clause = "WHERE p.stock > 0"
+            params = (end,)
+            if exclude_pid is not None:
+                where_clause += " AND p.pid <> %s"
+                params = (exclude_pid, end)
+            order_clause = "ORDER BY RANDOM()"
         else:
-            cur.execute("""
-                SELECT pid,prodname,description,stock,price,offer,sold,supplier,catgy,collection
-                FROM products
-                WHERE pid <= %s AND pid > %s
-                ORDER BY sold
-                """, (end, start))
+            where_clause = "WHERE p.pid <= %s AND p.pid > %s"
+            order_clause = "ORDER BY p.sold"
+            params = (end, start, end)
+
+        cur.execute(query.format(where_clause=where_clause, order_clause=order_clause), params)
         rows = cur.fetchall()
         if not rows:
             return []
@@ -47,20 +68,12 @@ def get_prod(end, start=0, randomize=False):
         prods = []
 
         for row in rows:
-            prod = dict(zip(heading, row))
+            prod = dict(zip(heading, row[:10]))
             prod["prodname"] = prod["prodname"].title()
 
-            cur.execute("SELECT link FROM images WHERE pid=%s", (prod["pid"],))
-            imgs = cur.fetchall() or [("black.png",)]
-
-            prod["images"] = [f"images/{i[0]}" for i in imgs]
-
-            cur.execute(
-                "SELECT SUM(star), COUNT(*) FROM review WHERE pid=%s",
-                (prod["pid"],)
-            )
-            s, n = cur.fetchone()
-            prod["rating"] = round(s / n) if s and n else 0
+            prod["images"] = [f"images/{image}" for image in row[10]]
+            total_stars, review_count = row[11], row[12]
+            prod["rating"] = round(total_stars / review_count) if review_count else 0
 
             prods.append(prod)
 
@@ -72,7 +85,8 @@ def get_prod(end, start=0, randomize=False):
         return []
 
     finally:
-        db.close()
+        if owns_connection:
+            db.close()
 
 
 
@@ -140,7 +154,7 @@ def store():
         cur.execute("SELECT DISTINCT catgy FROM products WHERE stock > 0")
         data = cur.fetchall()
 
-        products_list = get_prod(end, start)
+        products_list = get_prod(end, start, connection=(db, cur))
 
         has_more = len(products_list) == PRODUCTS_PER_PAGE
 
@@ -318,7 +332,13 @@ def product_detail(pid):
             l.append(dict(zip(heading,i)))
         prod['reviews']=l
 
-        return render_template("product.html", product=prod)
+        recommended = get_prod(
+            4,
+            randomize=True,
+            connection=(db, cur),
+            exclude_pid=pid,
+        )
+        return render_template("product.html", product=prod, recommended=recommended)
 
     finally:
         db.close()

@@ -12,42 +12,44 @@
 <body>
 
   <header>
-    <div class="logo" style="width: 55%;">
-      <img src="{{ url_for('static', filename='images/name.png') }}">
-    </div>
-    <nav id="navbar">
-      <a href="/">Home</a>
-      <a href="/store">Store</a>
-      <a href="/custom">Customize</a>
-      <a href="/contact">Contact</a>
-    </nav>
-    <div class="profile-menu">
-      <div class="profile-icon" onclick="toggleProfileMenu()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
-        </svg>
+    <div class="product-header-inner">
+      <a class="logo" href="/">
+        <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+      </a>
+      <nav id="navbar">
+        <a href="/">Home</a>
+        <a href="/store">Store</a>
+        <a href="/custom">Customize</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="product-header-actions">
+        <a class="cart-link" href="/cart" aria-label="Shopping cart">&#128722;</a>
+        <div class="profile-menu">
+          <div class="profile-icon" onclick="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <hr>
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
       </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        <hr>
-        <a href="/profile">My Profile</a>
-        <a href="/logout">Logout</a>
-      </div>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
     </div>
   </header>
 
-<section class="product-page">
+<main class="product-page">
 
   <!-- IMAGE GALLERY -->
   <div class="gallery">
-    <div class="main-image"style="--bg:url('{{ url_for('static', filename=product.images[0]) }}')">
-      <img src="{{ url_for('static', filename=product.images[0]) }}">
+    <div class="main-image" style="--bg:url('{{ url_for('static', filename=product.images[0]) }}')">
+      <span class="gallery-label">ZIORAA / ORIGINAL</span>
+      <img src="{{ url_for('static', filename=product.images[0]) }}" alt="{{ product.prodname }}">
     </div>
 
     <div class="thumbnail-row">
@@ -62,6 +64,7 @@
   <!-- PRODUCT INFO -->
   <div class="product-info">
 
+  <span class="product-kicker">Zioraa essentials / {{ product.ctgy }}</span>
   <h1 class="title">{{ product.prodname }}</h1>
 
   <div class="rating">
@@ -89,12 +92,40 @@
 
   <div class="buy-actions">
     <a class="btn primary" href="{{url_for('payment.checkout', pid=product.pid)}}">Buy Now</a>
-    <a class="btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Cart</a>
-    <a class="btn" href="{{url_for('products.add_wish', pid=product.pid)}}">Wishlist</a>
+    <a class="btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Add to cart</a>
+    <a class="btn icon-action" href="{{url_for('products.add_wish', pid=product.pid)}}" aria-label="Add to wishlist">&#9825;</a>
   </div>
 
-</div>
   </div>
+
+  {% if recommended %}
+  <section class="recommended">
+    <div class="recommended-heading">
+      <div>
+        <span class="product-kicker">Curated for you</span>
+        <h2>Recommended products</h2>
+      </div>
+      <a href="{{ url_for('products.store') }}">View all products <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="recommended-grid">
+      {% for item in recommended %}
+      <a class="recommended-card" href="{{ url_for('products.product_detail', pid=item.pid) }}">
+        <div class="recommended-image">
+          <img src="{{ url_for('static', filename=item.images[0]) }}" alt="{{ item.prodname }}">
+          <span>{{ '%02d'|format(loop.index) }}</span>
+        </div>
+        <div class="recommended-content">
+          <h3>{{ item.prodname }}</h3>
+          <div class="recommended-meta">
+            <span>₹{{ item.price }}</span>
+            <span>{{ item.rating }}/5 ★</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
 
 <!-- REVIEWS -->
 <div class="reviews">
@@ -145,7 +176,7 @@
   </div>
 
 </div>
-</section>
+</main>
 
 <script>
 const mainImg = document.querySelector(".main-image img");

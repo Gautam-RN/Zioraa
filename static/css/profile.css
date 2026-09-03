@@ -242,3 +242,227 @@ th{
       .tab-nav {flex-direction:column;}
       .home-button {top:10px; right:10px; padding:8px 12px;}
     }
+
+/* Premium profile refresh */
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 88% 5%, rgba(215, 175, 93, 0.12), transparent 24%),
+    linear-gradient(180deg, #0b0d0d 0%, #101416 100%);
+  color: #f5f1ea;
+}
+
+.profile-header {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 74px 28px 42px;
+  background: transparent;
+  text-align: left;
+}
+
+.profile-header::before {
+  content: "ZIORAA / ACCOUNT";
+  display: block;
+  margin-bottom: 16px;
+  color: #f1d487;
+  font-size: 0.7rem;
+  letter-spacing: 0.17em;
+}
+
+.profile-header h1 {
+  color: #f8f4eb;
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.profile-header p {
+  margin-top: 14px;
+  color: rgba(232, 225, 214, 0.68);
+}
+
+.home-button {
+  top: 76px;
+  right: 28px;
+  padding: 12px 15px;
+  border: 1px solid rgba(241, 212, 135, 0.34);
+  border-radius: 3px;
+  color: #f1d487;
+  background: rgba(18, 22, 23, 0.72);
+  font-size: 1.1rem;
+}
+
+.profile-container {
+  width: min(1180px, calc(100% - 56px));
+  margin: 0 auto 80px;
+  border: 1px solid rgba(241, 212, 135, 0.22);
+  border-radius: 3px;
+  background: rgba(18, 22, 23, 0.76);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.32);
+}
+
+.profile-card {
+  padding: 30px 34px;
+  border-bottom-color: rgba(241, 212, 135, 0.18);
+  background: linear-gradient(100deg, rgba(241, 212, 135, 0.09), transparent 55%);
+}
+
+.profile-card img {
+  width: 82px;
+  height: 82px;
+  border: 2px solid #f1d487;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.profile-card-info h2 {
+  color: #f1d487;
+  font-size: 1.5rem;
+}
+
+.profile-card-info p {
+  color: rgba(232, 225, 214, 0.66);
+}
+
+.tab-nav {
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(7, 10, 11, 0.36);
+}
+
+.tab-nav button {
+  padding: 17px 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+  color: rgba(232, 225, 214, 0.58);
+  cursor: pointer;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tab-nav button.active,
+.tab-nav button:hover {
+  background: rgba(241, 212, 135, 0.1);
+  color: #f1d487;
+}
+
+.tab-content {
+  padding: 38px 34px 44px;
+}
+
+.tab-section h3 {
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom-color: rgba(241, 212, 135, 0.2);
+  color: #f1d487;
+  font-size: 1.25rem;
+}
+
+.tab-section form {
+  max-width: 720px;
+}
+
+.tab-section label {
+  margin-top: 16px;
+  color: rgba(232, 225, 214, 0.68);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tab-section input,
+.tab-section textarea {
+  margin-top: 8px;
+  border-color: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+  background: rgba(7, 10, 11, 0.7);
+  color: #f8f4eb;
+}
+
+.tab-section input:focus,
+.tab-section textarea:focus {
+  outline: none;
+  border-color: rgba(241, 212, 135, 0.7);
+  box-shadow: 0 0 0 3px rgba(241, 212, 135, 0.08);
+}
+
+.tab-section button,
+.profile-actions button {
+  border-radius: 3px;
+  background: #f1d487;
+  color: #151311;
+}
+
+.profile-actions {
+  gap: 10px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-bottom: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.profile-actions button {
+  padding: 11px 16px;
+}
+
+table {
+  margin-top: 0;
+}
+
+th,
+td {
+  padding: 15px 12px;
+  border-bottom-color: rgba(255, 255, 255, 0.09);
+  text-align: left;
+}
+
+th {
+  color: #f1d487;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+td {
+  color: rgba(232, 225, 214, 0.75);
+}
+
+.tab-section .btn {
+  border-radius: 3px;
+  background: transparent;
+  border: 1px solid rgba(241, 212, 135, 0.38);
+  color: #f1d487;
+}
+
+@media (max-width: 700px) {
+  .profile-header {
+    padding: 58px 20px 32px;
+  }
+
+  .home-button {
+    top: 58px;
+    right: 20px;
+  }
+
+  .profile-container {
+    width: calc(100% - 40px);
+  }
+
+  .profile-card {
+    padding: 24px 20px;
+  }
+
+  .tab-content {
+    padding: 28px 20px 34px;
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 500px;
+  }
+
+  .profile-actions {
+    flex-wrap: wrap;
+  }
+}

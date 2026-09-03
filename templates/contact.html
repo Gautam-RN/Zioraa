@@ -11,81 +11,85 @@
 </head>
 <body>
   <header>
-    <div class="logo" style="width: 55%;">
-      <img src="{{ url_for('static', filename='images/name.png') }}">
-    </div>
+    <div class="contact-header-inner">
+      <a class="logo" href="/">
+        <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+      </a>
     <nav id="navbar">
       <a href="/">Home</a>
       <a href="/store">Store</a>
       <a href="/custom">Customize</a>
-      <a href="/contact">Contact</a>
+      <a class="active" href="/contact">Contact</a>
     </nav>
-    <div class="profile-menu">
-      <div class="profile-icon" onclick="toggleProfileMenu()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        <hr>
-        <a href="/profile">My Profile</a>
-        <a href="/logout">Logout</a>
+    <div class="contact-header-actions">
+      <a class="cart-link" href="/cart" aria-label="Shopping cart">&#128722;</a>
+      <div class="profile-menu">
+        <div class="profile-icon" onclick="toggleProfileMenu()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="profile-dropdown" id="profileDropdown">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+          <hr>
+          <a href="/profile">My Profile</a>
+          <a href="/logout">Logout</a>
+        </div>
       </div>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span></div>
+    </div>
   </header>
-  <section class="contact">
-    <br>
-    <h2>We’d Love to Hear From You</h2>
-    <p>Support, collaborations, or ideas — just drop us a message.</p>
-    <form class="contact-full">
-      <h3>Send a Message</h3>
-      <div class="field">
-        <input type="text" placeholder="Your Name" required>
+  <main class="contact">
+    <section class="contact-intro">
+      <span class="contact-kicker">Zioraa / Concierge</span>
+      <h1>Let’s make something worth talking about.</h1>
+      <p>For support, collaborations, custom posters, or just a good idea, our studio is listening.</p>
+    </section>
+
+    <section class="contact-workspace">
+      <form class="contact-full" action="{{ url_for('products.msg') }}" method="POST">
+        <span class="contact-kicker">01 / Send a message</span>
+        <h2>Tell us what’s on your mind.</h2>
+        <div class="form-row">
+          <label>Name<input type="text" name="name" placeholder="Your name" required></label>
+          <label>Email<input type="email" name="mail" placeholder="you@example.com" required></label>
+        </div>
+        <label>Message<textarea rows="6" name="msg" placeholder="Share your question or idea..." required></textarea></label>
+        <button class="btn" type="submit">Send message <span>→</span></button>
+      </form>
+      <div class="contact-aside">
+        <div class="aside-mark"><img src="{{ url_for('static', filename='images/image.png') }}" alt="Zioraa logo"></div>
+        <p>Thoughtful products, personal service, and a studio ready to help shape your next idea.</p>
+        <a class="email-link" href="mailto:zioraagroup@gmail.com">zioraagroup@gmail.com <span>↗</span></a>
       </div>
-      <div class="field">
-        <input type="email" placeholder="Your Email" required>
-      </div>
-      <div class="field">
-        <textarea rows="5" placeholder="Your Message" required></textarea>
-      </div>
-      <a class="btn" href="/msg">Send</a>
-    </form>
-    <div class="contact-bottom">
+    </section>
+
+    <section class="contact-bottom">
       <div class="map-wrapper fade-up">
-        <div class="map-title">FIND US</div>
+        <div class="contact-kicker">02 / Find us</div>
         <div class="map">
-          <iframe src="https://www.google.com/maps?q=Kerala,India&output=embed"></iframe>
+          <iframe src="https://www.google.com/maps?q=Kerala,India&output=embed" loading="lazy"></iframe>
         </div>
       </div>
       <div class="premium-card fade-up">
         <div class="contact-block">
-          <div class="block-title">Contact</div>
+          <div class="block-title">Stay connected</div>
           <div class="link-chips">
-            <a href="#"><i class="ri-instagram-line"></i> Instagram</a>
-            <a href="#"><i class="ri-youtube-line"></i> YouTube</a>
-            <a href="#"><i class="ri-twitter-x-line"></i> X</a>
-            <a href="mailto:support@zioraa.store"><i class="ri-mail-line"></i> Email</a>
-            <a href="https://wa.me/919999999999"><i class="ri-whatsapp-line"></i> WhatsApp</a>
+            <a href="https://www.instagram.com/zioraa_groups/" target="_blank"><i class="ri-instagram-line"></i> Instagram</a>
+            <a href="https://www.youtube.com/@Zioraa_store" target="_blank"><i class="ri-youtube-line"></i> YouTube</a>
+            <a href="https://x.com/zioraagroup" target="_blank"><i class="ri-twitter-x-line"></i> X</a>
+            <a href="https://wa.me/919999999999" target="_blank"><i class="ri-whatsapp-line"></i> WhatsApp</a>
           </div>
         </div>
         <div class="gold-divider"></div>
         <div class="contact-block">
-          <div class="block-title">Our Ventures</div>
-          <div class="link-chips">
-            <a href="#"><i class="ri-store-2-line"></i> Zioraa Fashion</a>
-            <a href="#"><i class="ri-flower-line"></i> Zioraa Cosmetics</a>
-            <a href="#"><i class="ri-building-line"></i> Zioraa Studio</a>
-          </div>
+          <div class="block-title">Our ventures</div>
+          <div class="venture-list"><span>Zioraa Fashion</span><span>Zioraa Cosmetics</span><span>Zioraa Studio</span></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
   <footer>
     © 2026 Zioraa. All rights reserved.
   </footer>

@@ -10,6 +10,10 @@ async function loadTab(url) {
 
     currentTabUrl = url;
 
+    document.querySelectorAll(".sidebar button").forEach(button => {
+        button.classList.toggle("active", button.getAttribute("onclick")?.includes(url));
+    });
+
     const content = document.getElementById("content-area");
 
     // CACHE
@@ -31,6 +35,10 @@ async function loadTab(url) {
     try {
 
         const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Tab request failed: ${response.status}`);
+        }
 
         const html = await response.text();
 

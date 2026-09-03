@@ -5,28 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zioraa | Register</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
-  <div class="container">
-    <div class="tab">
-      <a class="btn" href="/login">Login</a>
-      <a class="btn active" href="/register">Register</a>
+  <main class="auth-shell">
+    <a class="auth-logo" href="/">
+      <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+    </a>
+    <div class="auth-layout">
+      <section class="auth-form-panel">
+        <div class="tab">
+          <a href="/login">Login</a>
+          <a class="active" href="/register">Register</a>
+        </div>
+        <form id="register-form" action="{{ url_for('auth.add_user') }}" method="POST">
+          <h2>Create an Account</h2>
+          <input type="text" name="name" placeholder="Full Name" aria-label="Full Name" required>
+          <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+          <input type="password" name="pass" placeholder="Password" aria-label="Password" required>
+          <input type="password" name="cpass" placeholder="Confirm Password" aria-label="Confirm Password" required>
+          <button type="submit" class="abtn">Create account <span>→</span></button>
+          <div class="switch">Already have an account? <a href="/login">Login</a></div>
+        </form>
+      </section>
     </div>
-    <form id="register-form" action="{{ url_for('auth.add_user') }}" method="POST">
-      <div class="form-title">Create an Account</div>
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <input type="password" name="pass" placeholder="Password" required>
-      <input type="password" name="cpass" placeholder="Confirm Password" required>
-      <button type="submit" class="abtn">Register</button>
-      <div class="switch">
-        Already have an account?
-        <a href="/login" style="color:#ffd700;">Login</a>
-      </div>
-    </form>
-  </div>
+  </main>
 </body>
 </html>

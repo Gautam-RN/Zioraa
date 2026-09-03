@@ -1,0 +1,56 @@
+<div class="section-wrapper offers-wrapper">
+    <div class="section-header">
+        <div class="section-title">
+            <h2>Offers</h2>
+            <p>Set promotional pricing across the catalog or one product.</p>
+        </div>
+    </div>
+
+    <div class="offer-grid">
+        <div class="content-block offer-panel">
+            <span class="offer-kicker">Catalog-wide</span>
+            <h3>One offer for every product</h3>
+            <p>Apply the same percentage discount to your full catalog.</p>
+            <form action="{{ url_for('dash.update_offers') }}" method="POST" class="ajax-form offer-form">
+                <input type="hidden" name="scope" value="all">
+                <label>Offer percentage
+                    <div class="offer-input"><input type="number" name="offer" min="0" max="100" step="0.01" placeholder="0" required><span>%</span></div>
+                </label>
+                <button type="submit">Apply to all products <span>→</span></button>
+            </form>
+        </div>
+
+        <div class="content-block offer-panel">
+            <span class="offer-kicker">Single product</span>
+            <h3>Target one product</h3>
+            <p>Choose a product and set its offer independently.</p>
+            <form action="{{ url_for('dash.update_offers') }}" method="POST" class="ajax-form offer-form">
+                <input type="hidden" name="scope" value="product">
+                <label>Product
+                    <select name="pid" required>
+                        <option value="">Choose a product</option>
+                        {% for product in products %}
+                        <option value="{{ product[0] }}">#{{ product[0] }} · {{ product[1] }} ({{ product[3] }}%)</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label>Offer percentage
+                    <div class="offer-input"><input type="number" name="offer" min="0" max="100" step="0.01" placeholder="0" required><span>%</span></div>
+                </label>
+                <button type="submit">Apply to product <span>→</span></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="content-block offer-list">
+        <div class="block-header">
+            <h3>Current offers</h3>
+            <span>{{ products|length }} products</span>
+        </div>
+        <div class="offer-list-grid">
+            {% for product in products %}
+            <div class="offer-row"><span>#{{ product[0] }} {{ product[1] }}</span><strong>{{ product[3] }}%</strong></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

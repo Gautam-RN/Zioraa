@@ -103,6 +103,51 @@ def products_tab():
 
     return render_template("dash/products.html")
 
+@dash.route("/dash/offers")
+def offers_tab():
+
+    db, cur = get_db()
+    try:
+        cur.execute("""
+            SELECT pid, prodname, price, offer
+            FROM products
+            ORDER BY prodname
+        """)
+        products = cur.fetchall()
+        return render_template("dash/offers.html", products=products)
+    finally:
+        db.close()
+
+@dash.route("/dash/update-offers", methods=["POST"])
+def update_offers():
+
+    offer = request.form.get("offer", type=float)
+    scope = request.form.get("scope")
+    pid = request.form.get("pid", type=int)
+
+    if offer is None or offer < 0 or offer > 100:
+        return json_error("Offer must be between 0 and 100 percent")
+
+    if scope == "product" and not pid:
+        return json_error("Choose a product for a specific offer")
+
+    db, cur = get_db()
+    try:
+        if scope == "product":
+            cur.execute("UPDATE products SET offer=%s WHERE pid=%s", (offer, pid))
+            message = "Offer updated for the selected product"
+        else:
+            cur.execute("UPDATE products SET offer=%s", (offer,))
+            message = "Offer updated for all products"
+
+        db.commit()
+        return json_success(message)
+    except Exception as e:
+        db.rollback()
+        return json_error(str(e))
+    finally:
+        db.close()
+
 @dash.route("/dash/users")
 def users_tab():
 

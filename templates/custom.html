@@ -3,81 +3,104 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
 <title>Customize | Zioraa</title>
 </head>
 <body>
-<section class="customize">
-  <header>
-    <div class="logo" style="width: 55%;">
-      <img src="{{ url_for('static', filename='images/name.png') }}">
-    </div>
+<header>
+  <div class="custom-header-inner">
+    <a class="logo" href="/">
+      <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+    </a>
     <nav id="navbar">
       <a href="/">Home</a>
       <a href="/store">Store</a>
-      <a href="/custom">Customize</a>
+      <a class="active" href="/custom">Customize</a>
       <a href="/contact">Contact</a>
     </nav>
-    <div class="profile-menu">
-      <div class="profile-icon" onclick="toggleProfileMenu()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
-        </svg>
-      </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        <hr>
-        <a href="/profile">My Profile</a>
-        <a href="/logout">Logout</a>
+    <div class="custom-header-actions">
+      <a class="cart-link" href="/cart" aria-label="Shopping cart">&#128722;</a>
+      <div class="profile-menu">
+        <div class="profile-icon" onclick="toggleProfileMenu()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="profile-dropdown" id="profileDropdown">
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
+          <hr>
+          <a href="/profile">My Profile</a>
+          <a href="/logout">Logout</a>
+        </div>
       </div>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span></div>
-  </header>
-  <!-- HERO -->
-  <div class="custom-hero">
-    <h1>Customize Your Style</h1>
-    <p>Create your own design or modify existing ones</p>
   </div>
-  
+</header>
+
+<main class="customize">
+  <section class="custom-hero">
+    <div class="custom-hero-copy">
+      <span class="custom-kicker">Zioraa / Made by you</span>
+      <h1>Make it unmistakably yours.</h1>
+      <p>Start with a product, share your direction, and let our studio shape the details into something worth wearing.</p>
+      <div class="custom-steps">
+        <span><b>01</b> Pick a base</span>
+        <span><b>02</b> Share your idea</span>
+        <span><b>03</b> We bring it to life</span>
+      </div>
+    </div>
+    <div class="custom-hero-mark">
+      <img src="{{ url_for('static', filename='images/image.png') }}" alt="Zioraa">
+      <span>Originals, tailored</span>
+    </div>
+  </section>
+
+  <section class="custom-builder">
+    <div class="builder-heading">
+      <div>
+        <span class="custom-kicker">01 / Choose your canvas</span>
+        <h2>Pick a base product</h2>
+      </div>
+      <p>Select the piece you want our design team to customize.</p>
+    </div>
+
     {%if templates%}
-
-  <!-- DESIGNS -->
-  <h2 style="text-align:center;">Choose a Base Product</h2><br>
-
-  <div class="design-grid">
+    <div class="design-grid">
     {% for d in templates %}
-    <div class="design-card" onclick="selectDesign('{{ d.name }}')">
-      <img src="{{ url_for('static', filename=d.image) }}">
-      <div class="overlay">{{ d.name }}</div>
+    <div class="design-card" onclick="selectDesign('{{ d.name }}')" tabindex="0" role="button">
+      <img src="{{ url_for('static', filename=d.image) }}" alt="{{ d.name }}">
+      <div class="overlay"><span>Choose</span><strong>{{ d.name }}</strong></div>
     </div>
     {% endfor %}
+    </div>
     {%endif%}
 
-  </div>
+    <div class="custom-form-section">
+      <div class="form-heading">
+        <span class="custom-kicker">02 / Tell us more</span>
+        <h2>Request your custom design</h2>
+        <p>Give us the ingredients. We’ll handle the visual direction.</p>
+      </div>
 
-  <!-- FORM -->
-  <div class="custom-form-section">
-    <h2 style="text-align:center;">Request Custom Design</h2>
+      <form id="customForm" action="{{ url_for('products.custom_request') }}" method="POST" enctype="multipart/form-data" class="custom-form">
 
-    <form id="customForm" action="{{ url_for('products.custom_request') }}" method="POST" enctype="multipart/form-data" class="custom-form">
-
-      <input type="text" name="name" placeholder="Your Name" value="{{user}}" required>
-      <input type="email" name="email" placeholder="Your Email" value="{{email}}" required>
-      <input type="phone" name="phone" placeholder="Your Contact number" value="{{phone}}" required>
-      {%if templates%}
-      <input type="text" name="temp" id="selectedDesign" placeholder="Selected product" readonly>
-      {% endif %}
-      <textarea name="details" rows="5" placeholder="Describe your custom design..." required></textarea>
-      <button type="submit" class="btn">Submit Request</button>
-    </form>
-  </div>
-</section>
+        <div class="form-row">
+          <label>Name<input type="text" name="name" placeholder="Your name" value="{{user}}" required></label>
+          <label>Email<input type="email" name="email" placeholder="you@example.com" value="{{email}}" required></label>
+        </div>
+        <label>Contact number<input type="tel" name="phone" placeholder="Your contact number" value="{{phone}}" required></label>
+        {%if templates%}
+        <label>Selected product<input type="text" name="temp" id="selectedDesign" placeholder="Choose a base product above" readonly required></label>
+        {% endif %}
+        <label>Design direction<textarea name="details" rows="5" placeholder="Tell us about the artwork, colors, mood, and any references..." required></textarea></label>
+        <button type="submit" class="btn">Send design brief <span aria-hidden="true">→</span></button>
+      </form>
+    </div>
+  </section>
+</main>
 <script>
 function selectDesign(name) {
   document.getElementById("selectedDesign").value = name;

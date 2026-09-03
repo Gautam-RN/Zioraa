@@ -38,13 +38,10 @@
 
         <div class="sidebar-top">
 
-            <div class="logo">
+            <a class="logo" href="/">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Zioraa Logo" class="sidebar-logo" width="50">
-            <div>
-                <h2>Zioraa</h2>
-                <span>Admin Panel</span>
-            </div>
-        </div>
+                <span><strong>Zioraa</strong><small>Admin Panel</small></span>
+            </a>
         
         <div class="nav-section">
 
@@ -106,6 +103,11 @@
                 Products
             </button>
 
+            <button onclick="loadTab('/dash/offers')">
+                <i class="fa fa-tags"></i>
+                Offers
+            </button>
+
             <button onclick="loadTab('/dash/users')">
                 <i class="fa fa-users"></i>
                 Users
@@ -135,9 +137,7 @@
                         Dashboard
                     </h1>
 
-                    <p>
-                        Welcome back to Zioraa Admin Panel
-                    </p>
+                    <p>Business overview and operations</p>
 
                 </div>
 
@@ -145,6 +145,8 @@
 
 
             <div class="topbar-right">
+
+                <span class="live-status"><i></i> Live workspace</span>
 
                 <a class="home-btn" href="/">
                     <i class="fa fa-home"></i>

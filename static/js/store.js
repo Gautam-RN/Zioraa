@@ -58,7 +58,7 @@ document.getElementById("clearFilters").onclick = () => {
 
 products.forEach(card => {
   card.addEventListener("click", e => {
-    if (e.target.tagName === "BUTTON") return;
+    if (e.target.closest("a, button, input")) return;
     window.location.href = card.dataset.link;
   });
 });

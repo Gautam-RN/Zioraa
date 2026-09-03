@@ -10,46 +10,58 @@
 </head>
 <body>
   <header>
-    <div class="logo">
-      <img src="{{ url_for('static', filename='images/name.png') }}">
-    </div>
-    <section class="store-search">
-      <input type="text" id="searchInput" placeholder="Search products ( / )">
-    </section>
-    <nav id="navbar">
-      <a href="/">Home</a>
-      <a href="/store">Store</a>
-      <a href="/custom">Customize</a>
-      <a href="/contact">Contact</a>
-    </nav>
-    <div class="profile-menu">
-      <div class="profile-icon" onclick="toggleProfileMenu()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
-        </svg>
+    <div class="store-header-inner">
+      <a class="logo" href="/">
+        <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+      </a>
+      <nav id="navbar">
+        <a href="/">Home</a>
+        <a class="active" href="/store">Store</a>
+        <a href="/custom">Customize</a>
+        <a href="/contact">Contact</a>
+      </nav>
+      <div class="store-header-actions">
+        <a class="cart-link" href="/cart" aria-label="Shopping cart">&#128722;</a>
+        <div class="profile-menu">
+          <div class="profile-icon" onclick="toggleProfileMenu()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5Zm0 2c-3.3 0-10 1.7-10 5v1h20v-1c0-3.3-6.7-5-10-5Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <hr>
+            <a href="/profile">My Profile</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
       </div>
-      <div class="profile-dropdown" id="profileDropdown">
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
-        <hr>
-        <a href="/profile">My Profile</a>
-        <a href="/logout">Logout</a>
-      </div>
     </div>
-    <div class="menu-toggle" onclick="toggleMenu()">
-    <span></span>
-    <span></span>
-    <span></span>
   </header>
   <section class="store-hero">
-    <h2>Explore the {%if name%}{{name}} Collection {%else%}Store{%endif%}</h2>
-    <p>Premium designs crafted for your unique style</p>
+    <div class="store-hero-inner">
+      <span class="store-kicker">Zioraa / Curated essentials</span>
+      <h1>{%if name%}{{name}} Collection{%else%}The Zioraa Store{%endif%}</h1>
+      <p>Distinctive pieces, printed with intention and ready for your next statement.</p>
+      <div class="store-search">
+        <span aria-hidden="true">&#9906;</span>
+        <input type="text" id="searchInput" placeholder="Search the collection" aria-label="Search products">
+        <kbd>/</kbd>
+      </div>
+    </div>
   </section>
   <section class="store-container">
     <aside class="filters">
-    <h3>Filters</h3>
+    <div class="filter-heading">
+      <div>
+        <span class="filter-kicker">Refine</span>
+        <h2>Filters</h2>
+      </div>
+      <button id="clearFilters" type="button">Clear</button>
+    </div>
     <div class="filter-group">
-      <label style="font-size:13px; opacity:0.8;">Price Range</label>
+      <label class="filter-label">Price range</label>
       <div class="price-inputs">
         <input type="number" id="minPrice" placeholder="Min ₹">
         <input type="number" id="maxPrice" placeholder="Max ₹">
@@ -61,26 +73,30 @@
       <label><input type="checkbox" class="filter-category" value="{{i[0]}}"> {{i[0].title()}}</label>
       {%endfor%}
     </div>
-    <button id="clearFilters"style="width:100%;padding:10px;border-radius:22px;background:transparent;border:1px solid var(--border-soft);color:var(--silver);cursor:pointer;">
-    Clear Filters</button>
     {%else%}
     <h3>No Filters</h3>
     {%endif%}
     </aside>
     {%if products%}
-    <div><div class="store-products">
+    <div class="store-results">
+      <div class="results-toolbar">
+        <span>Shop all pieces</span>
+        <span>{{ products|length }} available now</span>
+      </div>
+      <div class="store-products">
       {% for product in products %}
       <div class="product-card" data-category="{{product.ctgy}}" data-price="{{product.price}}" data-link="{{ url_for('products.product_detail', pid=product.pid) }}">
-        <div class="product-image" style="background-image: url('{{url_for('static', filename=product.images[0])}}'">
-          <img src="{{url_for('static', filename=product.images[0])}}" alt="">
+        <div class="product-image" style="background-image: url('{{url_for('static', filename=product.images[0])}}')">
+          <img src="{{url_for('static', filename=product.images[0])}}" alt="{{ product.prodname }}">
+          <span class="product-number">{{ '%02d'|format(loop.index) }}</span>
         </div>
         <div class="product-content">
           <h3>{{product.prodname}}</h3>
-          <p>{{product.decrp}}</p>
+          <p>{{product.decrp or 'Designed for everyday expression.'}}</p>
           <div class="price">₹{{product.price}}</div>
           <div class="product-actions">
-            <a class="btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Add to Cart</a>
-            <a class="btn" href="{{url_for('products.add_wish', pid=product.pid)}}">Add to Wishlist</a>
+            <a class="btn cart-btn" href="{{url_for('products.add_cart', pid=product.pid)}}">Add to cart</a>
+            <a class="wishlist-btn" href="{{url_for('products.add_wish', pid=product.pid)}}" aria-label="Add {{ product.prodname }} to wishlist">&#9825;</a>
           </div>
         </div>
       </div>
