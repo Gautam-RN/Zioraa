@@ -10,31 +10,41 @@
 <title>Zioraa | Cart</title>
 </head>
 <body>
-<div class="cart-header">
-<h1>Your Cart</h1>
-<a href="/" class="home-btn"><i class="fa fa-home"></i></a>
-</div>
+<main class="cart-page">
+<header class="cart-header">
+	<a class="cart-logo" href="/"><img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa"></a>
+	<a href="/store" class="back-link">← Continue shopping</a>
+</header>
+<section class="cart-intro">
+	<span>Zioraa / Your selection</span>
+	<h1>Your cart.</h1>
+	<p>Review your pieces before moving to secure checkout.</p>
+</section>
 <div class="cart-container">
 {% if cart %}
 <table class="cart-table">
 <tr>
 <th>Product</th>
-<th>Amount</th>
+<th>Price</th>
 <th></th>
 </tr>
 {% for item in cart %}
 <tr>
 <td>
 <div class="cart-product">
-<img src="{{url_for('static', filename=item[10])}}">
+<img src="{{url_for('static', filename=item.image)}}" alt="{{ item.name }}">
 <div>
-<div>{{item[1]}}</div>
+<strong>{{ item.name }}</strong>
+{% if item.offer > 0 %}<small>{{ item.offer }}% offer applied</small>{% endif %}
 </div>
 </div>
 </td>
-<td>₹{{item[4]}}</td>
+<td class="item-price">
+	{% if item.offer > 0 %}<del>₹{{ item.price }}</del>{% endif %}
+	<strong>₹{{ item.sale_price }}</strong>
+</td>
 <td>
-<a href="{{url_for('products.delcart', pid=item[0])}}"><i class="fa fa-trash remove"></i></a>
+<a class="remove" aria-label="Remove {{ item.name }}" href="{{url_for('products.delcart', pid=item.pid)}}"><i class="fa fa-trash"></i></a>
 </td>
 </tr>
 {% endfor %}
@@ -48,7 +58,7 @@
 </div>
 <div class="summary-row">
 <span>Discount</span>
-<span>-{{offer}}</span>
+<span class="discount">-₹{{ offer }}</span>
 </div>
 <div class="summary-row">
 <span>Shipping</span>
@@ -57,10 +67,10 @@
 <hr style="border-color:#333; margin:10px 0">
 <div class="summary-row">
 <b>Total</b>
-<b>₹{{sub}}</b>
+<b class="grand-total">₹{{sub}}</b>
 </div>
 <a class="checkout" href="{{url_for('payment.checkout', pid=i)}}">
-Proceed to Checkout
+Proceed to checkout <span>→</span>
 </a>
 </div>
 </div>
@@ -71,5 +81,6 @@ Proceed to Checkout
 </div>
 {% endif %}
 </div>
+</main>
 </body>
 </html>

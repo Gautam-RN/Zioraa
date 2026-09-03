@@ -17,50 +17,77 @@
 </head>
 
 <body>
+<main class="checkout-page">
+    <header class="checkout-header">
+        <a href="/" class="checkout-logo">
+            <img src="{{ url_for('static', filename='images/name.png') }}" alt="Zioraa">
+        </a>
+        <a href="/store" class="back-link">← Back to store</a>
+    </header>
 
-<div class="box">
+    <div class="checkout-heading">
+        <span>Zioraa / Secure checkout</span>
+        <h1>Complete your order.</h1>
+        <p>Review your details and confirm your order to continue to payment.</p>
+    </div>
 
-    <h2>Checkout</h2>
+    <div class="checkout-layout">
+        <form id="checkoutForm" method="POST" action="/process" class="box">
+            <div class="form-section-title">
+                <span>01</span>
+                <h2>Your details</h2>
+            </div>
 
-    <form id="checkoutForm" method="POST" action="/process">
 
         <!-- USER DETAILS -->
         {% for pid in request.args.getlist('pid') %}
         <input type="hidden" name="pid" value="{{ pid }}">
         {% endfor %}
-        <input
+        <label>Name<input
             type="text"
             id="name"
             name="name"
             placeholder="Enter Name"
             value="{{ data.username if data.username != None else '' }}"
-        >
+            aria-label="Name">
+        </label>
 
-        <input
+        <label>Email<input
             type="email"
             id="email"
             name="email"
             placeholder="Enter Email"
             value="{{ data.mail if data.mail != None else '' }}"
-        >
+            aria-label="Email">
+        </label>
 
-        <input
+        <label>Phone number<input
             type="text"
             id="phone"
             name="phone"
             placeholder="Enter Phone Number"
             value="{{ data.phone if data.phone != None else '' }}"
-        >
+            aria-label="Phone number">
+        </label>
 
-        <textarea
+        <label>Delivery address<textarea
             id="address"
             name="address"
             placeholder="Enter Address"
-        >{{ data.address if data.address != None else '' }}</textarea>
+            aria-label="Delivery address">{{ data.address if data.address != None else '' }}</textarea>
+        </label>
+
+        <p class="secure-note">Your information is used only to process this order.</p>
+
+    </form>
 
 
         <!-- PRODUCTS -->
-
+    <aside class="order-summary">
+        <div class="form-section-title">
+            <span>02</span>
+            <h2>Order summary</h2>
+        </div>
         <div class="products">
 
             <table>
@@ -93,7 +120,8 @@
         <!-- TOTAL -->
 
         <div class="total">
-            Pay ₹{{ total }} and Click Proceed
+            <span>Total to pay</span>
+            <strong>₹{{ total }}</strong>
         </div>
 
         <!-- BUTTON -->
@@ -102,12 +130,12 @@
             type="button"
             onclick="payNow(); this.disabled=true;"
             class="btn">
-            Proceed
+            Proceed to payment <span>→</span>
         </button>
-
-    </form>
-
-</div>
+        <p class="payment-note">Secure payment powered by Cashfree</p>
+    </aside>
+  </div>
+</main>
 <script>
 let isPaying = false;
 

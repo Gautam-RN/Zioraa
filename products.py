@@ -1,3 +1,6 @@
+from decimal import Decimal
+import csv
+import os
 from flask import Blueprint,jsonify, render_template, render_template_string, redirect, url_for, session, abort, request
 from db import get_db
 
@@ -13,7 +16,7 @@ def alert(msg):
     )
 
 
-def get_prod(end, start=0, randomize=False, connection=None, exclude_pid=None):
+def get_prod(end, start=0, randomize=False, connection=None, exclude_pid=None, ids=None):
     owns_connection = connection is None
     db, cur = connection or get_db()
     if not cur:
@@ -42,7 +45,11 @@ def get_prod(end, start=0, randomize=False, connection=None, exclude_pid=None):
             LIMIT %s
         """
 
-        if randomize:
+        if ids:
+            where_clause = "WHERE p.pid = ANY(%s) AND p.stock > 0"
+            order_clause = "ORDER BY array_position(%s, p.pid)"
+            params = (ids, ids, end)
+        elif randomize:
             where_clause = "WHERE p.stock > 0"
             params = (end,)
             if exclude_pid is not None:
@@ -166,6 +173,34 @@ def store():
             has_more=has_more
             )
 
+    finally:
+        db.close()
+
+@products.route('/store/new-drop')
+def new_drop_store():
+    db, cur = get_db()
+    if not cur:
+        return render_template("404.html", code=503, title="Store temporarily unavailable",
+                               message="We are having trouble connecting to the store right now.",
+                               steps=["Refresh the page after a few seconds"],
+                               e="Database connection unavailable"), 503
+
+    try:
+        csv_path = os.path.join(os.path.dirname(__file__), "static", "images", "new_drop", "products", "products.csv")
+        ids = []
+        with open(csv_path, newline="", encoding="utf-8") as file:
+            for row in csv.DictReader(file):
+                try:
+                    product_id = int(row["pid"])
+                except (KeyError, TypeError, ValueError):
+                    continue
+                if product_id not in ids:
+                    ids.append(product_id)
+
+        products_list = get_prod(len(ids), connection=(db, cur), ids=ids) if ids else []
+        categories = sorted({product["ctgy"] for product in products_list if product.get("ctgy")})
+        return render_template("store.html", products=products_list, ctgy=[(category,) for category in categories],
+                               page=1, has_more=False, name="New Drop")
     finally:
         db.close()
 
@@ -446,24 +481,43 @@ def cart():
     data=cur.fetchall()
     l=[]
     m=[]
-    t=of=0
-    for i in data:
-        cur.execute("Select * from products where pid=%s",(i[0],))
-        data=cur.fetchone()
-        data=list(data)
-        of+=(data[4]*data[5]/100)
-        m.append(data[0])
-        cur.execute("Select link from images where pid=%s",(data[0],))
+    total=Decimal("0")
+    discount=Decimal("0")
+    for row in data:
+        cur.execute(
+            "SELECT pid, prodname, price, offer FROM products WHERE pid=%s",
+            (row[0],)
+        )
+        product=cur.fetchone()
+        if not product:
+            continue
+
+        pid, name, price, offer = product
+        price=Decimal(str(price))
+        offer=Decimal(str(offer or 0))
+        offer=max(Decimal("0"), min(Decimal("100"), offer))
+        item_discount=(price * offer / Decimal("100")).quantize(Decimal("0.01"))
+        sale_price=(price - item_discount).quantize(Decimal("0.01"))
+
+        cur.execute("SELECT link FROM images WHERE pid=%s", (pid,))
         img=cur.fetchone()
-        if img:
-            data.append("images/"+str(img[0]))
-        else:
-            data.append("images/black.png")
-        l.append(data)
-        t+=data[4]
+        l.append({
+            "pid": pid,
+            "name": name,
+            "price": price,
+            "offer": offer,
+            "discount": item_discount,
+            "sale_price": sale_price,
+            "image": "images/" + str(img[0]) if img else "images/black.png",
+        })
+        m.append(pid)
+        total += price
+        discount += item_discount
     db.close()
-    st=t-of
-    return render_template("cart.html",cart=l,total=t,i=m,offer=of,sub=st)
+    subtotal=total.quantize(Decimal("0.01"))
+    discount=discount.quantize(Decimal("0.01"))
+    grand_total=(subtotal - discount).quantize(Decimal("0.01"))
+    return render_template("cart.html",cart=l,total=subtotal,i=m,offer=discount,sub=grand_total)
 
 @products.route("/delcart/<int:pid>")
 def delcart(pid):

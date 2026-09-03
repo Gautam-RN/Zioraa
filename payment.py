@@ -1,3 +1,4 @@
+from decimal import Decimal
 from flask import Blueprint, request, render_template, session
 from db import get_db
 from dotenv import load_dotenv
@@ -47,9 +48,10 @@ def get_checkout_data(cur, uid, pids):
 
         name, price, offer = row
 
-        final_price = float(price) - (
-            float(offer) * float(price) / 100
-        )
+        price = Decimal(str(price))
+        offer = Decimal(str(offer or 0))
+        offer = max(Decimal("0"), min(Decimal("100"), offer))
+        final_price = (price - (price * offer / Decimal("100"))).quantize(Decimal("0.01"))
 
         products.append({
             "pid": pid,
@@ -69,7 +71,7 @@ def get_checkout_data(cur, uid, pids):
 
     username, mail, phone, address = user
 
-    total = sum(p["price"] for p in products)
+    total = sum((p["price"] for p in products), Decimal("0.00")).quantize(Decimal("0.01"))
 
     return {
         "username": username,

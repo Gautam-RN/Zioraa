@@ -7,6 +7,8 @@ from flask import (
     request,
     session
 )
+import csv
+import os
 
 from db import get_db
 
@@ -30,6 +32,9 @@ def json_success(message):
         "status": "success",
         "message": message
     })
+
+NEW_DROP_CSV = os.path.join(os.path.dirname(__file__), "static", "images", "new_drop", "products", "products.csv")
+NEW_DROP_POSTER = os.path.join(os.path.dirname(__file__), "static", "images", "new_drop", "new-drop.png")
 
 # =========================================================
 # MAIN DASHBOARD
@@ -115,6 +120,72 @@ def offers_tab():
         """)
         products = cur.fetchall()
         return render_template("dash/offers.html", products=products)
+    finally:
+        db.close()
+
+@dash.route("/dash/new-drop")
+def new_drop_tab():
+    if not login_required():
+        return redirect(url_for("auth.login"))
+
+    ids = []
+    try:
+        with open(NEW_DROP_CSV, newline="", encoding="utf-8") as file:
+            for row in csv.DictReader(file):
+                try:
+                    ids.append(int(row["pid"]))
+                except (KeyError, TypeError, ValueError):
+                    continue
+    except FileNotFoundError:
+        pass
+
+    return render_template("dash/new_drop.html", product_ids=ids,
+                           poster_url="/static/images/new_drop/new-drop.png")
+
+@dash.route("/dash/update-new-drop", methods=["POST"])
+def update_new_drop():
+    if not login_required():
+        return json_error("Login required")
+
+    raw_ids = request.form.get("product_ids", "")
+    ids = []
+    for value in raw_ids.replace(",", "\n").splitlines():
+        value = value.strip()
+        if not value:
+            continue
+        try:
+            product_id = int(value)
+        except ValueError:
+            return json_error("Product IDs must be whole numbers")
+        if product_id > 0 and product_id not in ids:
+            ids.append(product_id)
+
+    if not ids:
+        return json_error("Add at least one product ID")
+
+    db, cur = get_db()
+    try:
+        cur.execute("SELECT pid FROM products WHERE pid = ANY(%s)", (ids,))
+        valid_ids = {row[0] for row in cur.fetchall()}
+        missing = [str(product_id) for product_id in ids if product_id not in valid_ids]
+        if missing:
+            return json_error("Product ID not found: " + ", ".join(missing))
+
+        with open(NEW_DROP_CSV, "w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["pid"])
+            writer.writerows([[product_id] for product_id in ids])
+
+        poster = request.files.get("poster")
+        if poster and poster.filename:
+            if not poster.filename.lower().endswith(".png"):
+                return json_error("Poster must be a PNG image")
+            poster.save(NEW_DROP_POSTER)
+
+        return json_success("New drop updated successfully")
+    except Exception as e:
+        db.rollback()
+        return json_error(str(e))
     finally:
         db.close()
 

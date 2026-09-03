@@ -118,9 +118,11 @@
 
   <span class="page-number">Page {{ page }}</span>
 
-  <a href="{{ url_for('products.store', page=page+1) }}" class="page-btn">
-    →
-  </a>
+  {% if has_more %}
+    <a href="{{ url_for('products.store', page=page+1) }}" class="page-btn">
+        →
+      </a>
+  {% endif %}
 
 </div>
   <footer>© 2026 Zioraa. All rights reserved.</footer>

@@ -1,0 +1,33 @@
+<div class="section-wrapper new-drop-wrapper">
+    <div class="section-header">
+        <div class="section-title">
+            <h2>New Drop</h2>
+            <p>Change the weekly poster and choose the products shown with it.</p>
+        </div>
+    </div>
+
+    <div class="new-drop-grid">
+        <div class="content-block new-drop-preview">
+            <span class="offer-kicker">Current poster</span>
+            <div class="poster-frame">
+                <img src="{{ poster_url }}" alt="Current new drop poster">
+            </div>
+            <a class="poster-link" href="/store/new-drop" target="_blank">Open new drop store <span>↗</span></a>
+        </div>
+
+        <div class="content-block new-drop-editor">
+            <span class="offer-kicker">Weekly setup</span>
+            <h3>Update the new drop</h3>
+            <p>Use a PNG poster and list the product IDs to display, one per line or separated by commas.</p>
+            <form action="{{ url_for('dash.update_new_drop') }}" method="POST" enctype="multipart/form-data" class="ajax-form new-drop-form">
+                <label>Poster image
+                    <input type="file" name="poster" accept="image/png">
+                </label>
+                <label>Product IDs
+                    <textarea name="product_ids" rows="7" required>{{ product_ids|join('\n') }}</textarea>
+                </label>
+                <button type="submit">Save new drop <span>→</span></button>
+            </form>
+        </div>
+    </div>
+</div>
