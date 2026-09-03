@@ -57,9 +57,11 @@ def get_prod(end, start=0, randomize=False, connection=None, exclude_pid=None, i
                 params = (exclude_pid, end)
             order_clause = "ORDER BY RANDOM()"
         else:
-            where_clause = "WHERE p.pid <= %s AND p.pid > %s"
+            where_clause = "WHERE p.stock > 0"
             order_clause = "ORDER BY p.sold"
-            params = (end, start, end)
+            params = (end - start, start)
+
+            query = query.replace("LIMIT %s", "LIMIT %s OFFSET %s")
 
         cur.execute(query.format(where_clause=where_clause, order_clause=order_clause), params)
         rows = cur.fetchall()

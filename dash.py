@@ -9,6 +9,8 @@ from flask import (
 )
 import csv
 import os
+import uuid
+from werkzeug.utils import secure_filename
 
 from db import get_db
 
@@ -35,6 +37,27 @@ def json_success(message):
 
 NEW_DROP_CSV = os.path.join(os.path.dirname(__file__), "static", "images", "new_drop", "products", "products.csv")
 NEW_DROP_POSTER = os.path.join(os.path.dirname(__file__), "static", "images", "new_drop", "new-drop.png")
+PRODUCT_IMAGE_DIR = os.path.join(os.path.dirname(__file__), "static", "images")
+ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
+
+def save_product_images(cur, pid, files):
+    saved_paths = []
+    for image in files:
+        if not image or not image.filename:
+            continue
+
+        original_name = secure_filename(image.filename)
+        extension = os.path.splitext(original_name)[1].lower()
+        if not original_name or extension not in ALLOWED_IMAGE_EXTENSIONS:
+            raise ValueError("Images must be JPG, PNG, WEBP files")
+
+        filename = f"product_{pid}_{uuid.uuid4().hex}{extension}"
+        image_path = os.path.join(PRODUCT_IMAGE_DIR, filename)
+        image.save(image_path)
+        saved_paths.append(image_path)
+        cur.execute("INSERT INTO images (pid, link) VALUES (%s, %s)", (pid, filename))
+
+    return saved_paths
 
 # =========================================================
 # MAIN DASHBOARD
@@ -589,6 +612,7 @@ def add_product():
                 colour
             )
             VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            RETURNING pid
         """, (
             request.form["name"],
             request.form["desc"],
@@ -602,6 +626,9 @@ def add_product():
             request.form["colour"]
         ))
 
+        pid = cur.fetchone()[0]
+
+        save_product_images(cur, pid, request.files.getlist("images"))
         db.commit()
 
         return json_success(
@@ -655,6 +682,7 @@ def update_prod():
             request.form["pid"]
         ))
 
+        save_product_images(cur, request.form["pid"], request.files.getlist("images"))
         db.commit()
 
         return json_success(
